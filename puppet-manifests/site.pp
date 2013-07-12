@@ -69,7 +69,7 @@ $controller_node_internal = $controller_node_address
 $sql_connection         = "mysql://nova:${nova_db_password}@${controller_node_internal}/nova"
 
 # this machine
-node /moc-node-fdsfds/ { # openstack_controller
+node /moc-node-8/ { # openstack_controller
 
   ### NEW
   include 'apache'
