@@ -1,0 +1,58 @@
+#!/bin/sh
+
+if [ "`whoami`" = root ] ; then
+	:
+else
+	echo 'Permission denied. Are you root?'
+	exit 1
+fi
+
+# This script is responsible for spawning a new vlan, and attaching a head
+# node to it. Eventually it will also be able to tear them down.
+#
+usage() {
+   echo 'usage:'
+   echo '    vm-vlan up <vlan_id> <headnode-name>'
+   echo '    vm-vlan down <vlan_id> <headnode-name>'
+   echo '    vm-vlan restore'
+   exit 1
+}
+
+vlan="${2}"
+head="${3}"
+
+
+case "$1" in
+	up)
+		[ -z "$vlan" ] && [ -z "$head" ] && usage
+		vconfig add eth5 $vlan
+		brctl addbr br${vlan}
+		brctl addif br${vlan} eth5.${vlan}
+		ifconfig br${vlan} up
+		ifconfig eth5.${vlan} up promisc
+		EDITOR="move_headnode.py ${vlan}" virsh edit ${head}
+		[ -d /var/lib/headnode-config/${vlan} ] || mkdir /var/lib/headnode-config/${vlan}
+		printf '%s\n' "${head}" > /etc/vlans/${vlan}
+		virsh destroy "${head}" ; virsh start "${head}"
+	;;
+	down)
+		[ -z "$vlan" ] && [ -z "$head" ] && usage
+		virsh destroy ${head}
+		brctl delif br${vlan} eth5.${vlan}
+		ifconfig br${vlan} down
+		ifconfig eth5.${vlan} down
+		vconfig rem eth5.${vlan}
+		brctl delbr br${vlan}
+		rm /etc/vlans/${vlan}
+	;;
+	restore)
+		for f in /etc/vlans/*; do
+			vlan="`basename $f`"
+			head="`cat $f`"
+			$0 up $vlan $head
+		done
+	;;
+	*)
+		usage
+	;;
+esac
