@@ -6,7 +6,7 @@ from mocutils import switch as cfg
 
 import pexpect
 
-def make_remove_vlans(vlan_ids, add, switch_ip='192.168.0.1', user=cfg.user, pwd=cfg.pwd):
+def make_remove_vlans(vlan_ids, add, switch_ip=cfg.ip, user=cfg.user, pwd=cfg.pwd):
   # Expects that you send a string which is a comma separated list of vlan_ids and a bool for adding or removing
   
   p = pexpect.spawn('telnet ' + switch_ip)
@@ -39,7 +39,7 @@ def make_remove_vlans(vlan_ids, add, switch_ip='192.168.0.1', user=cfg.user, pwd
   p.sendline('exit\r')
   p.expect('foreign host')
 
-def edit_ports_on_vlan(port_ids, vlan_id, add, switch_ip='192.168.0.1', user=cfg.user, pwd=cfg.pwd):
+def edit_ports_on_vlan(port_ids, vlan_id, add, switch_ip=cfg.ip, user=cfg.user, pwd=cfg.pwd):
   # Expects that you send a comma separated list of ports
   # A string for vlan_id
   # And a bool for adding (True = adding, False = Removing)

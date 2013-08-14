@@ -6,7 +6,7 @@ import sys
 sys.path.insert(0, '/etc/moc')
 from mocutils import switch as cfg
 
-def make_remove_vlans(vlan_ids, add, switch_ip='192.168.0.1', user=cfg.user, pwd=cfg.pwd):
+def make_remove_vlans(vlan_ids, add, switch_ip=cfg.ip, user=cfg.user, pwd=cfg.pwd):
   # Expects that you send a string which is a comma separated list of vlan_ids and a bool for adding or removing
   
   p = pexpect.spawn('telnet ' + switch_ip)

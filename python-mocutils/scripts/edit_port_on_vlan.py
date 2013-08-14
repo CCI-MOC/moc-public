@@ -6,7 +6,7 @@ from mocutils import switch as cfg
 
 import pexpect
 
-def edit_ports_on_vlan(ports, vlan_id, add, switch_ip='192.168.0.1', user=cfg.user, pwd=cfg.pwd):
+def edit_ports_on_vlan(ports, vlan_id, add, switch_ip=cfg.ip, user=cfg.user, pwd=cfg.pwd):
   # Expects that you send a comma separated list of ports
   # A string for vlan_id
   # And a bool for adding (True = adding, False = Removing)
