@@ -1,12 +1,11 @@
 #!/usr/bin/python
 
-import sys
+import sys, pexpect
+
 sys.path.insert(0, '/etc/moc')
 from mocutils import switch as cfg
 
-import pexpect
-
-def make_remove_vlans(vlan_ids, add, switch_ip=cfg.ip, user=cfg.user, pwd=cfg.pwd):
+def make_remove_vlans(vlan_ids, add, switch_ip='192.168.0.1', user=cfg.user, pwd=cfg.pwd):
   # Expects that you send a string which is a comma separated list of vlan_ids and a bool for adding or removing
   
   p = pexpect.spawn('telnet ' + switch_ip)
@@ -39,7 +38,8 @@ def make_remove_vlans(vlan_ids, add, switch_ip=cfg.ip, user=cfg.user, pwd=cfg.pw
   p.sendline('exit\r')
   p.expect('foreign host')
 
-def edit_ports_on_vlan(port_ids, vlan_id, add, switch_ip=cfg.ip, user=cfg.user, pwd=cfg.pwd):
+
+def edit_ports_on_vlan(port_ids, vlan_id, add, switch_ip='192.168.0.1', user=cfg.user, pwd=cfg.pwd):
   # Expects that you send a comma separated list of ports
   # A string for vlan_id
   # And a bool for adding (True = adding, False = Removing)
@@ -68,7 +68,33 @@ def edit_ports_on_vlan(port_ids, vlan_id, add, switch_ip=cfg.ip, user=cfg.user, 
     else:
       p.sendline('switchport allowed vlan remove ' + vlan_id + '\r')
     p.expect('TP-LINK')
+    p.sendline('exit\r')
+    p.expect('TP-LINK')
   
+  p.sendline('exit\r')
+  p.expect('TP-LINK')
+  p.sendline('exit\r')
+  p.expect('TP-LINK')
+  p.sendline('exit\r')
+  p.expect('foreign host')
+
+
+def get_switch_state(switch_ip='192.168.0.1', user=cfg.user, pwd=cfg.pwd):
+  p = pexpect.spawn('telnet ' + switch_ip)
+  p.logfile = sys.stdout
+  p.expect('User:')
+  p.sendline(user + '\r')
+  p.expect('Password:')
+  p.sendline(pwd + '\r')
+  p.expect('TP-LINK')
+  p.sendline('enable\r')
+  p.expect('TP-LINK')
+  p.sendline('configure\r')
+  p.expect('TP-LINK')
+  p.sendline('vlan database\r')
+  p.expect('TP-LINK')
+  p.sendline('show vlan\r')
+  p.expect('TP-LINK')
   p.sendline('exit\r')
   p.expect('TP-LINK')
   p.sendline('exit\r')
@@ -77,3 +103,6 @@ def edit_ports_on_vlan(port_ids, vlan_id, add, switch_ip=cfg.ip, user=cfg.user, 
   p.expect('TP-LINK')
   p.sendline('exit\r')
   p.expect('foreign host')
+
+
+
