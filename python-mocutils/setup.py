@@ -6,6 +6,7 @@ setup(name='mocutils',
         'scripts/power_cycle.py',
         'scripts/move_headnode.py',
         'scripts/vm-vlan',
-	'scripts/boot-default.py'
+	'scripts/boot-default.py',
+	'scripts/linky.py'
         ]
       )
