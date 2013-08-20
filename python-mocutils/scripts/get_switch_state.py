@@ -1,10 +1,7 @@
 #! /usr/bin/python
 import sys, re, pexpect
 
-sys.path.insert(0, '/etc/moc')
-from mocutils import switch as cfg
-
-def get_switch_state(switch_ip=cfg.ip,user=cfg.user,passwd=cfg.pwd):
+def get_switch_state(switch_ip='192.168.0.1',user='admin',passwd='admin'):
         p = pexpect.spawn('telnet '+switch_ip)
         p.expect('User:')
         p.sendline(user+'\r')
