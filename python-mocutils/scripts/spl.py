@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import sys, re
-import db_controls
+from mocutils import db_controls
 
 
 def print_help():
