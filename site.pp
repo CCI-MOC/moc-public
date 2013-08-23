@@ -21,16 +21,16 @@ $public_interface        = 'eth1'
 $private_interface       = 'eth0'
 # credentials
 $admin_email             = 'root@localhost'
-$admin_password          = 'moc2123moc'
-$keystone_db_password    = 'moc2123moc'
-$keystone_admin_token    = 'moc2123moc'
-$nova_db_password        = 'moc2123moc'
-$nova_user_password      = 'moc2123moc'
-#$quantum_db_password        = 'moc2123moc'
-#$quantum_user_password      = 'moc2123moc'
-$glance_db_password      = 'moc2123moc'
-$glance_user_password    = 'moc2123moc'
-$rabbit_password         = 'moc2123moc'
+$admin_password          = 'changeme'
+$keystone_db_password    = 'changeme'
+$keystone_admin_token    = 'changeme'
+$nova_db_password        = 'changeme'
+$nova_user_password      = 'changeme'
+#$quantum_db_password        = 'changeme'
+#$quantum_user_password      = 'changeme'
+$glance_db_password      = 'changeme'
+$glance_user_password    = 'changeme'
+$rabbit_password         = 'changeme'
 $rabbit_user             = 'openstack_rabbit_user'
 # $fixed_network_range     = '10.0.0.0/24'
 $fixed_network_range     = '192.168.15.0/24'
@@ -42,12 +42,12 @@ $auto_assign_floating_ip = false
 
 ## JUST ADDED
 $libvirt_type            = 'kvm'
-$mysql_root_password     = 'moc2123moc'
-$secret_key              = 'moc2123moc'
+$mysql_root_password     = 'changeme'
+$secret_key              = 'changeme'
 $havequantum  	 = false
 $havecinder		 = false
-$cinder_user_password    = 'moc2123moc'
-$cinder_db_password      = 'moc2123moc'
+$cinder_user_password    = 'changeme'
+$cinder_db_password      = 'changeme'
 ## JUST ADDED
 
 
