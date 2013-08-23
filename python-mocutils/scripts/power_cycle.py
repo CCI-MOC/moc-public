@@ -1,9 +1,14 @@
 #!/usr/bin/python
 
+import sys
+
+sys.path.insert(0, '/etc/moc')
+from mocutils import power_cycle as cfg
+
 import pkg_resources
 import requests
 
-def power_cycle(ip, port='16992', user='admin', pwd='MOC2123moc!!', time=3):
+def power_cycle(ip, port='16992', user=cfg.user, pwd=cfg.pwd, time=3):
   url = 'http://' + ip + ':' + port + '/remoteform'
 
   # After version 0.8.2 the usage for http_digest changed to HTTPDigestAuth
