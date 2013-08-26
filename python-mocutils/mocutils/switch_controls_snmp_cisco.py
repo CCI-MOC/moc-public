@@ -24,6 +24,18 @@ def make_remove_vlans(vlan_ids,add,switch_ip='192.168.0.254'):
 			os.system('snmpset -v2c -c private '+switch_ip+' vtpVlanEditOperation.1 i 2')
 			os.system('snmpset -v2c -c private '+switch_ip+' vtpVlanEditRowStatus.1.'+vlan_id+' i 6')
 			os.system('snmpset -v2c -c private '+switch_ip+' vtpVlanEditOperation.1 i 3')
-def edit_ports_on_vlan():
-	pass
-	#vmVlan OID not found, TODO
+def edit_ports_on_vlan(port_ids,vlan_id,add,switch_ip='192.168.0.254'):
+	
+	# Expects that you send a comma separated list of ports
+ 	# A string for vlan_id
+  	# And a bool for adding (True = adding, False = Removing)
+	for port_id in port_ids.split(','):
+		ifIndex=int(port_id)+1
+		ifIndex=str(ifIndex)
+		#The ifIndex for FastEthernet0/1 is 2, for FastEthernet0/48 is 49. Except the 48 FastEthernet ports. 
+		#There are two ports GigabitEthernet0/1 and GigabitEthernet0/2
+		if add:
+			os.system('snmpset -v2c -c private '+switch_ip+' vmVlan.'+ifIndex+' i '+vlan_id)
+		else:
+		#remove the port by setting it to belong to the default vlan 1
+			os.system('snmpset -v2c -c private '+switch_ip+' vmVlan.'+ifIndex+' i 1')
