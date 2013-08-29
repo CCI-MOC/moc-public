@@ -3,6 +3,11 @@
 # basic single and multi-node openstack environments.
 #
 
+# This version is specific to a test setup with three nodes: 9 (controller),
+# and 11 and 13 (compute).  For other setups, you must change the lines
+# labelled CHANGEME
+
+
 # deploy a script that can be used to test nova
 class { 'openstack::test_file': }
 
@@ -60,14 +65,14 @@ $cinder_db_password      = 'changeme'
 
 # multi-node specific parameters
 
-$controller_node_address  = '192.168.3.9'
+$controller_node_address  = '192.168.3.9' # CHANGEME
 
 $controller_node_public   = $controller_node_address
 $controller_node_internal = $controller_node_address
 $sql_connection         = "mysql://nova:${nova_db_password}@${controller_node_internal}/nova"
 
 # this machine
-node /moc-node-9/ { # openstack_controller
+node /moc-node-9/ { # CHANGEME
 
   ### NEW
   include 'apache'
@@ -115,7 +120,7 @@ node /moc-node-9/ { # openstack_controller
 }
 
 # our compute node
-node /moc-node-11/ { # openstack_compute
+node /moc-node-(11|13)/ { # CHANGEME
 
   class { 'openstack::compute':
     public_interface   => $public_interface,
