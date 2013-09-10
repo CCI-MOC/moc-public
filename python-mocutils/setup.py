@@ -11,5 +11,6 @@ setup(name='mocutils',
             'scripts/spl.py',
         ],
         packages=['mocutils'],
+        py_modules=['mocpdb'],
       )
 # vim:set ts=4 sw=4 et:
