@@ -12,5 +12,6 @@ setup(name='mocutils',
         ],
         packages=['mocutils'],
         py_modules=['mocpdb'],
+#	requires=['requests', 'pkg-resources'],
       )
 # vim:set ts=4 sw=4 et:

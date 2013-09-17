@@ -1,0 +1,13 @@
+Source: python-mocutils
+Priority: extra
+Maintainer: Ian Denhardt (isd)
+Homepage: http://www.massopencloud.org
+Build-Depends: debhelper, python-support, cdbs, python-all-dev
+XS-Python-Version: >= 2.7
+
+Package: python-mocutils
+Architecture: all
+XB-Python-Version: ${python:Versions}
+Depends: ${misc:Depends}, ${python:Depends}
+Description: MOC python utilities
+ Various utilities for system administration at the MOC.
