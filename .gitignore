@@ -1,3 +1,4 @@
 python-mocutils/build
+python-mocutils/dist
 *.pyc
 *.~
