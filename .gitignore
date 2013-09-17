@@ -1,4 +1,14 @@
+python-mocutils/debian/files
+python-mocutils/debian/python-mocutils
+python-mocutils/debian/python-module-stampdir
 python-mocutils/build
 python-mocutils/dist
 *.pyc
 *.~
+*.deb
+*.tar.gz
+*.log
+*.debhelper
+*.substvars
+*.dsc
+*.changes
