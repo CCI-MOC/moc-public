@@ -19,26 +19,33 @@ class headnode (
 	# We only want the dhcp server listening on eth0. This file handles that:
 	file { '/etc/default/isc-dhcp-server':
 		content => 'INTERFACES="eth0"\n',
+		require => Package['isc-dhcp-server'],
 	}
 	# Copy the bootloader into the tftp directory:
 	file { '/var/lib/tftpboot/pxelinux.cfg/pxlinux.0':
 		source => '/usr/lib/syslinux/pxelinux.0',
+		require => Package['syslinux-common'],
 	}
 	file { '/var/lib/tftpboot/pxelinux.cfg/menu.c32':
 		source => '/usr/lib/syslinux/menu.c32',
+		require => Package['syslinux-common'],
 	}
 	file { '/var/lib/tftpboot/pxelinux.cfg/memdisk':
 		source => '/usr/lib/syslinux/memdisk',
+		require => Package['syslinux-common'],
 	}
 	file { '/var/lib/tftpboot/pxelinux.cfg/mboot.c32':
 		source => '/usr/lib/syslinux/mboot.c32',
+		require => Package['syslinux-common'],
 	}
 	file { '/var/lib/tftpboot/pxelinux.cfg/chain.c32':
 		source => '/usr/lib/syslinux/chain.c32',
+		require => Package['syslinux-common'],
 	}
 	# make sure dhcpd is configured correctly:
 	file { '/etc/dhcp/dhcpd.conf':
 		source => 'puppet:///modules/mocpoc/headnode/dhcpd.conf',
+		require => Package['isc-dhcp-server'],
 	}
 	# make sure the network setup is correct:
 	file { '/etc/network/interfaces':
@@ -55,6 +62,7 @@ class headnode (
 	# make the tftp directory available via http as well - this is needed for kickstart to work:
 	file { '/etc/nginx/sites-enabled/tftp':
 		source => 'puppet:///modules/mocpoc/headnode/nginx-tftp',
+		require => Package['nginx'],
 	}
 	# TODO:
 	# - mount /etc/moc
