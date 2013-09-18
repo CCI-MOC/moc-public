@@ -1,4 +1,4 @@
-class headnode (
+class mocpoc::headnode (
 ) {
 	# We need a few packages for our head nodes:
 	package { 'isc-dhcp-server':
@@ -21,26 +21,38 @@ class headnode (
 		content => 'INTERFACES="eth0"\n',
 		require => Package['isc-dhcp-server'],
 	}
-	# Copy the bootloader into the tftp directory:
-	file { '/var/lib/tftpboot/pxelinux.cfg/pxlinux.0':
-		source => '/usr/lib/syslinux/pxelinux.0',
-		require => Package['syslinux-common'],
+	# We need this directory to exist for a number of things:
+	file { '/var/lib/tftpboot/pxelinux.cfg':
+		ensure => 'directory',
+		require => Package['tftpd-hpa'],
 	}
-	file { '/var/lib/tftpboot/pxelinux.cfg/menu.c32':
+	Package['tftpd-hpa'] -> File['/var/lib/tftpboot/pxelinux.0']
+	Package['tftpd-hpa'] -> File['/var/lib/tftpboot/menu.c32']
+	Package['tftpd-hpa'] -> File['/var/lib/tftpboot/memdisk']
+	Package['tftpd-hpa'] -> File['/var/lib/tftpboot/mboot.c32']
+	Package['tftpd-hpa'] -> File['/var/lib/tftpboot/chain.c32']
+	Package['syslinux-common'] -> File['/var/lib/tftpboot/pxelinux.0']
+	Package['syslinux-common'] -> File['/var/lib/tftpboot/menu.c32']
+	Package['syslinux-common'] -> File['/var/lib/tftpboot/memdisk']
+	Package['syslinux-common'] -> File['/var/lib/tftpboot/mboot.c32']
+	Package['syslinux-common'] -> File['/var/lib/tftpboot/chain.c32']
+
+	# Copy the bootloader into the tftp directory:
+	file { '/var/lib/tftpboot/pxelinux.0':
+		source => '/usr/lib/syslinux/pxelinux.0',
+	}
+	file { '/var/lib/tftpboot/menu.c32':
 		source => '/usr/lib/syslinux/menu.c32',
 		require => Package['syslinux-common'],
 	}
-	file { '/var/lib/tftpboot/pxelinux.cfg/memdisk':
+	file { '/var/lib/tftpboot/memdisk':
 		source => '/usr/lib/syslinux/memdisk',
-		require => Package['syslinux-common'],
 	}
-	file { '/var/lib/tftpboot/pxelinux.cfg/mboot.c32':
+	file { '/var/lib/tftpboot/mboot.c32':
 		source => '/usr/lib/syslinux/mboot.c32',
-		require => Package['syslinux-common'],
 	}
-	file { '/var/lib/tftpboot/pxelinux.cfg/chain.c32':
+	file { '/var/lib/tftpboot/chain.c32':
 		source => '/usr/lib/syslinux/chain.c32',
-		require => Package['syslinux-common'],
 	}
 	# make sure dhcpd is configured correctly:
 	file { '/etc/dhcp/dhcpd.conf':
@@ -49,7 +61,7 @@ class headnode (
 	}
 	# make sure the network setup is correct:
 	file { '/etc/network/interfaces':
-		source = 'puppet:///modules/mocpoc/headnode/interfaces',
+		source => 'puppet:///modules/mocpoc/headnode/interfaces',
 	}
 	# boot nodes to the disk by default:
 	file { '/var/lib/tftpboot/pxelinux.cfg/default':
@@ -58,6 +70,7 @@ class headnode (
 		label disk
 			LOCALBOOT 0
 		',
+		require => File['/var/lib/tftpboot/pxelinux.cfg'],
 	}
 	# make the tftp directory available via http as well - this is needed for kickstart to work:
 	file { '/etc/nginx/sites-enabled/tftp':
