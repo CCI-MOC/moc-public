@@ -1,0 +1,29 @@
+server {
+    # We only want to listen on the private interface; the public internet
+    # doesn't need access.
+    listen 192.168.10.254:80;
+
+    root /var/lib/tftpboot;
+    index index.html index.htm;
+
+    # Make site accessible from http://localhost/
+    server_name localhost;
+
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to index.html
+        try_files $uri $uri/ /index.html;
+    }
+
+    # This allows the kickstart post-install script to inform us that it
+    # should boot to the disk going forward, rather than starting the
+    # installer.
+    location /boot-default/ {
+        fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+        fastcgi_param SCRIPT_FILENAME /usr/local/bin/boot-default.py;
+        fastcgi_param QUERY_STRING $query_string;
+        fastcgi_param REQUEST_METHOD $request_method;
+        fastcgi_param CONTENT_TYPE $content_type;
+        fastcgi_param CONTENT_LENGTH $content_length;
+    }
+}
