@@ -1,5 +1,13 @@
 class mocpoc::headnode (
 ) {
+
+	$syslinux_files = [
+		'/var/lib/tftpboot/pxelinux.0',
+		'/var/lib/tftpboot/menu.c32',
+		'/var/lib/tftpboot/memdisk',
+		'/var/lib/tftpboot/mboot.c32',
+		'/var/lib/tftpboot/chain.c32',
+	]
 	# We need a few packages for our head nodes:
 	package { 'isc-dhcp-server':
 		ensure => 'installed',
@@ -26,16 +34,8 @@ class mocpoc::headnode (
 		ensure => 'directory',
 		require => Package['tftpd-hpa'],
 	}
-	Package['tftpd-hpa'] -> File['/var/lib/tftpboot/pxelinux.0']
-	Package['tftpd-hpa'] -> File['/var/lib/tftpboot/menu.c32']
-	Package['tftpd-hpa'] -> File['/var/lib/tftpboot/memdisk']
-	Package['tftpd-hpa'] -> File['/var/lib/tftpboot/mboot.c32']
-	Package['tftpd-hpa'] -> File['/var/lib/tftpboot/chain.c32']
-	Package['syslinux-common'] -> File['/var/lib/tftpboot/pxelinux.0']
-	Package['syslinux-common'] -> File['/var/lib/tftpboot/menu.c32']
-	Package['syslinux-common'] -> File['/var/lib/tftpboot/memdisk']
-	Package['syslinux-common'] -> File['/var/lib/tftpboot/mboot.c32']
-	Package['syslinux-common'] -> File['/var/lib/tftpboot/chain.c32']
+	Package['tftpd-hpa'] -> File[$syslinux_files]
+	Package['syslinux-common'] -> File[$syslinux_files]
 
 	# Copy the bootloader into the tftp directory:
 	file { '/var/lib/tftpboot/pxelinux.0':
