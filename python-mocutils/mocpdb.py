@@ -2,7 +2,7 @@
 
 import socket, pdb
 
-def remote_pdb(address=('127.0.0.1',9778)):
+def remote_pdb(address=('0.0.0.0',9778)):
     '''
     Waits for a connection on `address`, which should be a streaming address
     suitable for passing to `socket.bind`, and attaches an instance of
