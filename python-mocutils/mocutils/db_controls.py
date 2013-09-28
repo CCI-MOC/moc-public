@@ -40,17 +40,26 @@ class DB_Controller:
   
   
   def _create_tables(self):
-    # For initializing a non-existant db
+    #For initializing a non-existant db
     c = self.conn.cursor()
+
+    #The port connected to the node is not fixed
     c.execute('''CREATE TABLE nodes
-	  (node_id integer primary key, mac_addr string, manage_ip string, available integer, group_name string)''')
+	  (node_id integer primary key, port_id integer, mac_addr string, manage_ip string, available integer, group_name string)''')
     c.execute('''CREATE TABLE groups
-	  (group_name string primary key, vlan_id integer, vm_name string)''')
-    c.execute('''CREATE TABLE vlans
-	  (vlan_id integer primary key, available integer)''')
+	  (group_name string primary key, network_id integer, vm_name string)''')
     c.execute('''CREATE TABLE vms
 	  (vm_name string primary key, available integer)''')
-  
+    c.execute('''CREATE TABLE ports
+    	  (port_id integer primary key, switch_id integer, port_no integer)''')
+    #network technology, vlan or openflow,etc
+    c.execute('''CREATE TABLE networks
+  	  (network_id integer primary key, network_technology string, available integer)''')
+    #Different switch model runs different script to setup VLAN
+    c.execute('''CREATE TABLE switches
+    	  (switch_id integer primary key, vendor_script string)''')
+
+
   
   def show_group(self, name):
     if not self.check_exists('groups', 'group_name', name):
