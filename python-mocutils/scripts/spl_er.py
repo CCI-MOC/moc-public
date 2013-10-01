@@ -1,4 +1,4 @@
-from sqlalchemy import *
+from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker,backref
 Base=declarative_base()
@@ -23,13 +23,19 @@ class Node(Base):
     def __repr__(self):
         return "<Node(%r %r %r %r %r)"%(self.node_id,self.mac_addr,self.manage_ip,self.available,self.group)
 
+"""
+one to one mapping between group and vm
+one to one mapping between group and vlan
+many to one mapping between node and group
+"""
+
 class Group(Base):
     __tablename__='groups'
     name=Column(String,primary_key=True)
     vm_name=Column(String,ForeignKey('vms.name'))
     vlan_id=Column(Integer,ForeignKey('vlans.vlan_id'))
-    vm=relationship("VM")
-    vlan=relationship("Vlan")
+    vm=relationship("VM",backref=backref('group',uselist=False))
+    vlan=relationship("Vlan",backref=backref('group',uselist=False))
     def __init__(self,name="group1"):
         self.name=name
 
@@ -58,7 +64,7 @@ class Vlan(Base):
         return "Vlan(%r %r)"%(self.vlan_id,self.available)
 
 
-engine=create_engine('sqlite:///spl6.db',echo=True)
+engine=create_engine('sqlite:///spl7.db',echo=True)
 Base.metadata.create_all(engine)
 Session=sessionmaker(bind=engine)
 session=Session()
