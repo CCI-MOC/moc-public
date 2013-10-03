@@ -53,6 +53,18 @@ class VM(Base):
     def __repr__(self):
         return "<VM( %r %r)>"%(self.name,self.available)
 
+class Network(Base):
+    __tablename__='networks'
+    network_id=(Integer,primary_key=True)
+    network_technology=Column(String)
+
+    def __init__(self,network_id,network_technology="vlan"):
+        self.network_id=network_id
+        self.network_technology=network_technology
+    def __repr__(self):
+        return "Network(%r %r)"%(self.network_id,self.network_technology)
+
+
 class Vlan(Base):
     __tablename__='vlans'
     vlan_id=Column(Integer,primary_key=True)
@@ -62,6 +74,32 @@ class Vlan(Base):
         self.available=available
     def __repr__(self):
         return "Vlan(%r %r)"%(self.vlan_id,self.available)
+
+class Port(Base):
+    __tablename__='ports'
+    port_id=Column(Integer,primary_key=True)
+    switch_id=Column(Integer,ForeignKey('switches.switch_id'))
+    port_no=Column(Integer)
+    switch=relationship("Switch",backref=backref('ports',order_by=port_id))
+
+    def __init__(self,port_id,switch_id,port_no):
+        self.port_id=port_id
+        self.port_no=port_no
+        self.switch_id=switch_id
+    def __repr__(self):
+        return "Port(%r %r)"%(self.port_id,self.port_no)
+
+
+class Switch(Base):
+    __tablename__='switches'
+    switch_id=Column(Integer,primary_key=True)
+    script=Column(String)
+
+    def __init__(self,switch_id,script):
+        self.switch_id=switch_id
+        self.script=script
+    def __repr__(self):
+        return "Switch(%r %r)"%(self.switch_id,self.script)
 
 
 engine=create_engine('sqlite:///spl7.db',echo=True)
