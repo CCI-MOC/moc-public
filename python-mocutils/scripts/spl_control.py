@@ -18,11 +18,22 @@ def query_db(classname):
     for some in all:
         print some
 
-def create_group(group_name,vm_name,vlan_id):
+def check_available(classname,field,value):
+    for some in session.query(classname).filter(field=value).all():
+	print some
+
+def create_group(group_name,vm_name,network_id,network_technology):
     group=Group(group_name)
-    vm=VM(vm_name)
-    vlan=Vlan(vlan_id)
-    group.vm=vm
-    group.vlan=vlan
+    if check_available(vm_name):
+    	group.vm=get_vm_by_name(vm_name)
+    else:
+    	print "error: "+vm_name+" not available"
+	return
+    if check_available(network_id):
+    	group.network=get_network_by_id(network_id)
+    else:
+    	print "error: network_id "+network_id+" not available"
+	return
+
     session.add(group)
     session.commit()

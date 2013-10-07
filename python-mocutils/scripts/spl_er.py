@@ -106,7 +106,7 @@ class Switch(Base):
         return "Switch(%r %r)"%(self.switch_id,self.script)
 
 
-engine=create_engine('sqlite:///spl16.db',echo=True)
+engine=create_engine('sqlite:///spl17.db',echo=True)
 Base.metadata.create_all(engine)
 Session=sessionmaker(bind=engine)
 session=Session()
