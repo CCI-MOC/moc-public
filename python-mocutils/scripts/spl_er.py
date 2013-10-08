@@ -110,34 +110,6 @@ engine=create_engine('sqlite:///spl17.db',echo=True)
 Base.metadata.create_all(engine)
 Session=sessionmaker(bind=engine)
 session=Session()
-c1=Node(1,"mac1","10.0.0.1")
-c2=Node(2,"mac2","10.0.0.2")
-c3=Node(3,"mac3","10.0.0.3")
-c4=Node(4,"mac4","10.0.0.4")
-c5=Node(5,"mac5","10.0.0.5")
-c6=Node(6,"mac6","10.0.0.6")
-p1=Port(201,1,1)
-p2=Port(202,1,2)
-p3=Port(203,1,3)
-p4=Port(204,2,1)
-p5=Port(205,2,2)
-p6=Port(206,2,3)
-g1=Group("group1")
-vm1=VM("vm1")
-network1=Network(101,"vlan")
-sw1=Switch(1,"cisco_snmp.py")
-sw2=Switch(2,"tp_link.py")
-
-c1.port=p1
-c2.port=p2
-c3.port=p3
-c4.port=p4
-c5.port=p5
-c6.port=p6
-
-g1.vm=vm1
-g1.network=network1
-g1.nodes=[c1,c2,c3]
 
 #Check all nodes in g1 connect to same switch.
 #run the script, print the nodes
