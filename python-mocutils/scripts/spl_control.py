@@ -18,9 +18,12 @@ def query_db(classname):
     for some in all:
         print some
 
-def check_available(classname,field,value):
-    for some in session.query(classname).filter(field=value).all():
-	print some
+def check_available(classname,cond):
+    """
+    classname specifies which kind of objects
+    cond is a string like "node_id==2"
+    """
+    print session.query(classname).filter(cond).first().available
 
 def create_group(group_name,vm_name,network_id,network_technology):
     group=Group(group_name)
