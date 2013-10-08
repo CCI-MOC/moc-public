@@ -92,9 +92,9 @@ def load_resources():
 
 def create_group(group_name,vm_name):
     group=Group(group_name)
-    if check_available(VM,'name=='+'"'+vm_name+'"'):
+    if check_available(VM,'name=="%s"'%vm_name):
     #NOT working 
-    	group.vm=get_entity_by_cond(VM,'name=='+'"'+vm_name+'"')
+    	group.vm=get_entity_by_cond(VM,'name=="%s"'%vm_name)
         group.vm.available=False
     else:
     	print "error: "+vm_name+" not available"
