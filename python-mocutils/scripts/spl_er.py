@@ -40,7 +40,7 @@ class Group(Base):
     
     vm=relationship("VM",backref=backref('group',uselist=False))
     network=relationship("Network",backref=backref('group',uselist=False))
-    def __init__(self,name="group1"):
+    def __init__(self,name):
         self.name=name
 
     def __repr__(self):
@@ -51,8 +51,8 @@ class VM(Base):
     name=Column(String,primary_key=True)
     available=Column(Boolean)
 
-    def __init__(self,name="vm1",available=True):
-        self.name="vm1"
+    def __init__(self,name,available=True):
+        self.name=name
         self.available=available
     def __repr__(self):
         return "<VM(%r %r)>"%(self.name,self.available)
@@ -73,7 +73,7 @@ class Vlan(Base):
     __tablename__='vlans'
     vlan_id=Column(Integer,primary_key=True)
     available=Column(Boolean) 
-    def __init__(self,vlan_id=100,available=True):
+    def __init__(self,vlan_id,available=True):
         self.vlan_id=vlan_id
         self.available=available
     def __repr__(self):
