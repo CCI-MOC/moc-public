@@ -74,6 +74,19 @@ def create_port_pool():
     session.add(p5)
     session.add(p6)
 def connect_nodes_to_ports():
+    c1=get_entity_by_cond(Node,'node_id==1')
+    c2=get_entity_by_cond(Node,'node_id==2')
+    c3=get_entity_by_cond(Node,'node_id==3')
+    c4=get_entity_by_cond(Node,'node_id==4')
+    c5=get_entity_by_cond(Node,'node_id==5')
+    c6=get_entity_by_cond(Node,'node_id==6')
+
+    p1=get_entity_by_cond(Port,'port_id==201')
+    p2=get_entity_by_cond(Port,'port_id==202')
+    p3=get_entity_by_cond(Port,'port_id==203')
+    p4=get_entity_by_cond(Port,'port_id==204')
+    p5=get_entity_by_cond(Port,'port_id==205')
+    p6=get_entity_by_cond(Port,'port_id==206')
     c1.port=p1
     c2.port=p2
     c3.port=p3
@@ -87,18 +100,61 @@ def load_resources():
     create_vm_pool()
     create_switch_pool()
     create_port_pool()
-   # connect_nodes_to_ports()
+    connect_nodes_to_ports()
     session.commit()
 
-def create_group(group_name,vm_name):
+def add_node_to_group(node_id,group_name):
+    node=get_entity_by_cond(Node,'node_id==%d'%node_id)
+    group=get_entity_by_cond(Group,'name=="%s"'%group_name)
+
+    if node.available:
+        node.group=group
+	node.available=False
+    else:
+	print "error: node "+node_id+" not available"
+    session.commit()
+
+
+def create_group(group_name,vm_name,network_id):
     group=Group(group_name)
-    if check_available(VM,'name=="%s"'%vm_name):
-    #NOT working 
-    	group.vm=get_entity_by_cond(VM,'name=="%s"'%vm_name)
+    vm_name_cond='name=="%s"'%vm_name
+    network_id_cond='network_id==%d'%network_id
+    if check_available(VM,vm_name_cond):
+    	group.vm=get_entity_by_cond(VM,vm_name_cond)
         group.vm.available=False
     else:
-    	print "error: "+vm_name+" not available"
+    	print "error: vm "+vm_name+" not available"
         return
-    print "group.vm=",group.vm
+    
+    if check_available(Network,network_id_cond):
+	group.network=get_entity_by_cond(Network,network_id_cond)
+	group.network.available=False
+    else:
+	print "error: network "+network_id+" not available"
+	return
     session.add(group)
     session.commit()
+
+def check_same_non_empty_list(ls):
+    for ele in ls:
+	if ele != ls[0]: return False
+    return ls[0]
+
+def deploy_group(group_name):
+    group=get_entity_by_cond(Group,'name=="%s"'%group_name)
+    nodes=session.query(Node).filter('group_name=="%s"'%group_name)
+    for node in nodes:
+	print "%s %s"%(node.mac_addr,node.manage_ip)
+    print group.network_id
+    switches=[]
+    for node in nodes:
+	switches.append(node.port.switch_id)
+    #Check all the nodes in the group are connected to the same switch 
+    switch_id=check_same_non_empty_list(switches)
+    if switch_id==False:
+	print "error: ports not in same switch"
+    else:
+	print "same switch ",switch_id
+	switch=get_entity_by_cond(Switch,'switch_id==%d'%switch_id)
+	print switch.script
+	

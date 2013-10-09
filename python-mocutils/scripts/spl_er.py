@@ -61,12 +61,14 @@ class Network(Base):
     __tablename__='networks'
     network_id=Column(Integer,primary_key=True)
     network_technology=Column(String)
+    available=Column(Boolean)
 
-    def __init__(self,network_id,network_technology="vlan"):
+    def __init__(self,network_id,network_technology="vlan",available=True):
         self.network_id=network_id
         self.network_technology=network_technology
+	self.available=available
     def __repr__(self):
-        return "Network(%r %r)"%(self.network_id,self.network_technology)
+        return "Network(%r %r %r)"%(self.network_id,self.network_technology,self.available)
 
 
 class Vlan(Base):
@@ -106,7 +108,7 @@ class Switch(Base):
         return "Switch(%r %r)"%(self.switch_id,self.script)
 
 
-engine=create_engine('sqlite:///spl17.db',echo=True)
+engine=create_engine('sqlite:///spl17.db',echo=False)
 Base.metadata.create_all(engine)
 Session=sessionmaker(bind=engine)
 session=Session()
