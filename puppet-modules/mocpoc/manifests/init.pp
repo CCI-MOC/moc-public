@@ -1,4 +1,4 @@
-# This module allows for an openstack deployment with one node, assuming the
+# This module allows for an openstack deployment with one control node, assuming the
 # network setup used with the mocpoc. Here is a sample site.pp, which should
 # be sufficient:
 #
