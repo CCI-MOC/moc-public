@@ -9,19 +9,13 @@ class mocpoc::headnode (
 		"${tftpdir}/chain.c32",
 	]
 	# We need a few packages for our head nodes:
-	package { 'isc-dhcp-server':
-		ensure => 'installed',
-	}
-	package { 'tftpd-hpa':
-		ensure => 'installed',
-	}
-	package { 'syslinux-common':
-		ensure => 'installed',
-	}
-	package { 'fcgiwrap':
-		ensure => 'installed',
-	}
-	package { 'nginx':
+	package { [
+		'isc-dhcp-server',
+		'tftpd-hpa',
+		'syslinux-common',
+		'fcgiwrap',
+		'nginx',
+		] :
 		ensure => 'installed',
 	}
 	# We only want the dhcp server listening on eth0. This file handles that:
