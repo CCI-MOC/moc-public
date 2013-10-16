@@ -1,12 +1,12 @@
 class mocpoc::headnode (
 ) {
-
+	$tftpdir = '/var/lib/tftpboot'
 	$syslinux_files = [
-		'/var/lib/tftpboot/pxelinux.0',
-		'/var/lib/tftpboot/menu.c32',
-		'/var/lib/tftpboot/memdisk',
-		'/var/lib/tftpboot/mboot.c32',
-		'/var/lib/tftpboot/chain.c32',
+		'${tftpdir}/pxelinux.0',
+		'${tftpdir}/menu.c32',
+		'${tftpdir}/memdisk',
+		'${tftpdir}/mboot.c32',
+		'${tftpdir}/chain.c32',
 	]
 	# We need a few packages for our head nodes:
 	package { 'isc-dhcp-server':
@@ -77,8 +77,14 @@ class mocpoc::headnode (
 		source => 'puppet:///modules/mocpoc/headnode/nginx-tftp',
 		require => Package['nginx'],
 	}
+	# Mount the virtio filesystem on boot (This doesn't seem to work from fstab):
+	file { '/etc/rc.local':
+		content => '
+		mount -t 9p -o ro,trans=virtio /etc/moc /etc/moc
+		'
+	}
+	file {
 	# TODO:
-	# - mount /etc/moc
 	# - most of /var/lib/tftpboot/centos
 	# - iptables
 	# - puppet master
