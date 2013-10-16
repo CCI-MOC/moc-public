@@ -2,11 +2,11 @@ class mocpoc::headnode (
 ) {
 	$tftpdir = '/var/lib/tftpboot'
 	$syslinux_files = [
-		'${tftpdir}/pxelinux.0',
-		'${tftpdir}/menu.c32',
-		'${tftpdir}/memdisk',
-		'${tftpdir}/mboot.c32',
-		'${tftpdir}/chain.c32',
+		"${tftpdir}/pxelinux.0",
+		"${tftpdir}/menu.c32",
+		"${tftpdir}/memdisk",
+		"${tftpdir}/mboot.c32",
+		"${tftpdir}/chain.c32",
 	]
 	# We need a few packages for our head nodes:
 	package { 'isc-dhcp-server':
@@ -83,7 +83,6 @@ class mocpoc::headnode (
 		mount -t 9p -o ro,trans=virtio /etc/moc /etc/moc
 		'
 	}
-	file {
 	# TODO:
 	# - most of /var/lib/tftpboot/centos
 	# - iptables
