@@ -6,13 +6,6 @@ class mocpoc::headnode (
 	$slave_rootpw,
 ) {
 	$tftpdir = '/var/lib/tftpboot'
-	$syslinux_files = [
-		"${tftpdir}/pxelinux.0",
-		"${tftpdir}/menu.c32",
-		"${tftpdir}/memdisk",
-		"${tftpdir}/mboot.c32",
-		"${tftpdir}/chain.c32",
-	]
 	# We need a few packages for our head nodes:
 	package { [
 		'isc-dhcp-server',
@@ -48,26 +41,15 @@ class mocpoc::headnode (
 		require => File["${tftpdir}/centos"],
 		source => 'puppet:///modules/mocpoc/headnode/initrd.img',
 	}
-	Package['tftpd-hpa'] -> File[$syslinux_files]
-	Package['syslinux-common'] -> File[$syslinux_files]
 
 	# Copy the bootloader into the tftp directory:
-	file { "${tftpdir}/pxelinux.0":
-		source => '/usr/lib/syslinux/pxelinux.0',
-	}
-	file { "${tftpdir}/menu.c32":
-		source => '/usr/lib/syslinux/menu.c32',
-		require => Package['syslinux-common'],
-	}
-	file { "${tftpdir}/memdisk":
-		source => '/usr/lib/syslinux/memdisk',
-	}
-	file { "${tftpdir}/mboot.c32":
-		source => '/usr/lib/syslinux/mboot.c32',
-	}
-	file { "${tftpdir}/chain.c32":
-		source => '/usr/lib/syslinux/chain.c32',
-	}
+	mocpoc::syslinux_file { [
+		'pxelinux.0',
+		'menu.c32',
+		'memdisk',
+		'mboot.c32',
+		'chain.c32',
+	] : }
 	# make sure dhcpd is configured correctly:
 	file { '/etc/dhcp/dhcpd.conf':
 		source => 'puppet:///modules/mocpoc/headnode/dhcpd.conf',
