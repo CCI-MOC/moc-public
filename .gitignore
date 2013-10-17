@@ -12,3 +12,5 @@ python-mocutils/dist
 *.substvars
 *.dsc
 *.changes
+vmlinuz
+initrd.img

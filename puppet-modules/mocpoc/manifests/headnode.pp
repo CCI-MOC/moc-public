@@ -40,6 +40,14 @@ class mocpoc::headnode (
 		require => File["${tftpdir}/centos"],
 		content => template('mocpoc/ks.cfg.erb'),
 	}
+	file { "${tftpdir}/centos/vmlinuz":
+		require => File["${tftpdir}/centos"],
+		source => 'puppet:///modules/mocpoc/headnode/vmlinuz',
+	}
+	file { "${tftpdir}/centos/initrd.img":
+		require => File["${tftpdir}/centos"],
+		source => 'puppet:///modules/mocpoc/headnode/initrd.img',
+	}
 	Package['tftpd-hpa'] -> File[$syslinux_files]
 	Package['syslinux-common'] -> File[$syslinux_files]
 
