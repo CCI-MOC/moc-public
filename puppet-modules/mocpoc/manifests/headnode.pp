@@ -56,9 +56,11 @@ class mocpoc::headnode (
 	# make sure the network setup is correct:
 	file { '/etc/network/interfaces':
 		source => 'puppet:///modules/mocpoc/headnode/interfaces',
+		notify => Service['networking'],
 	}
 	file { '/etc/iptables':
 		source => 'puppet:///modules/mocpoc/headnode/iptables',
+		notify => Service['networking'],
 	}
 	# boot nodes to the disk by default:
 	file { '/var/lib/tftpboot/pxelinux.cfg/default':
@@ -79,6 +81,15 @@ class mocpoc::headnode (
 		content => '
 		mount -t 9p -o ro,trans=virtio /etc/moc /etc/moc
 		'
+	}
+
+	service { [
+		'networking',
+		'nginx',
+		'isc-dhcp-server',
+		'tftpd-hpa',
+		] :
+		ensure => running,
 	}
 	# TODO:
 	# - most of /var/lib/tftpboot/centos.
