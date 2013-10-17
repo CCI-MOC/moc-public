@@ -1,3 +1,5 @@
+# This file is managed by puppet; do not edit it here.
+
 # The loopback network interface
 auto lo
 iface lo inet loopback
@@ -18,3 +20,4 @@ iface eth0:1 inet static
 # The public network interface
 auto eth1
 iface eth1 inet dhcp
+    pre-up iptables-restore < /etc/iptables

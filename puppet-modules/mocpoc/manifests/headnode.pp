@@ -57,6 +57,9 @@ class mocpoc::headnode (
 	file { '/etc/network/interfaces':
 		source => 'puppet:///modules/mocpoc/headnode/interfaces',
 	}
+	file { '/etc/iptables':
+		source => 'puppet:///modules/mocpoc/headnode/iptables',
+	}
 	# boot nodes to the disk by default:
 	file { '/var/lib/tftpboot/pxelinux.cfg/default':
 		content => '
@@ -93,7 +96,6 @@ class mocpoc::headnode (
 	#
 	#   Unfortunately, this won't work since puppet can't use an http url as a
 	#   source. It's also at least questionable from a security standpoint.
-	# - iptables
 	# - puppet master
 	# - python-mocutils
 }
