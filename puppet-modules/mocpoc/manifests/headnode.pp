@@ -24,7 +24,7 @@ class mocpoc::headnode (
 		require => Package['isc-dhcp-server'],
 	}
 	# We need this directory to exist for a number of things:
-	file { '/var/lib/tftpboot/pxelinux.cfg':
+	file { "${tftpdir}/pxelinux.cfg":
 		ensure => 'directory',
 		require => Package['tftpd-hpa'],
 	}
@@ -32,20 +32,20 @@ class mocpoc::headnode (
 	Package['syslinux-common'] -> File[$syslinux_files]
 
 	# Copy the bootloader into the tftp directory:
-	file { '/var/lib/tftpboot/pxelinux.0':
+	file { "${tftpdir}/pxelinux.0":
 		source => '/usr/lib/syslinux/pxelinux.0',
 	}
-	file { '/var/lib/tftpboot/menu.c32':
+	file { "${tftpdir}/menu.c32":
 		source => '/usr/lib/syslinux/menu.c32',
 		require => Package['syslinux-common'],
 	}
-	file { '/var/lib/tftpboot/memdisk':
+	file { "${tftpdir}/memdisk":
 		source => '/usr/lib/syslinux/memdisk',
 	}
-	file { '/var/lib/tftpboot/mboot.c32':
+	file { "${tftpdir}/mboot.c32":
 		source => '/usr/lib/syslinux/mboot.c32',
 	}
-	file { '/var/lib/tftpboot/chain.c32':
+	file { "${tftpdir}/chain.c32":
 		source => '/usr/lib/syslinux/chain.c32',
 	}
 	# make sure dhcpd is configured correctly:
@@ -63,13 +63,13 @@ class mocpoc::headnode (
 		notify => Service['networking'],
 	}
 	# boot nodes to the disk by default:
-	file { '/var/lib/tftpboot/pxelinux.cfg/default':
+	file { "${tftpdir}/pxelinux.cfg/default":
 		content => '
 		default disk
 		label disk
 			LOCALBOOT 0
 		',
-		require => File['/var/lib/tftpboot/pxelinux.cfg'],
+		require => File["${tftpdir}/pxelinux.cfg"],
 	}
 	# make the tftp directory available via http as well - this is needed for kickstart to work:
 	file { '/etc/nginx/sites-enabled/tftp':
@@ -92,7 +92,7 @@ class mocpoc::headnode (
 		ensure => running,
 	}
 	# TODO:
-	# - most of /var/lib/tftpboot/centos.
+	# - most of ${tftpdir}/centos.
 	#
 	#   Conceptually, we want something like this, to grab the boot images for
 	#   centos:
