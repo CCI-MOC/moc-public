@@ -21,7 +21,7 @@ authconfig --useshadow --pasalgo=sha512
 bootloader --location=mbr
 keyboard us
 lang en_US
-rootpw --iscrypted <%= @rootpw %>
+rootpw --iscrypted <%= @slave_rootpw %>
 timezone --utc US/Eastern
 
 # we want the machine to reboot on it's own when finished with installation:

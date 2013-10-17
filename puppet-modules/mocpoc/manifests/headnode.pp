@@ -1,4 +1,9 @@
+# Sets up an ubuntu 12.04 machine as a headnode for mocpoc-head.
+#
+# Parameters:
+# [slave_rootpw]: the encrypted root password to use on slave nodes (mandatory).
 class mocpoc::headnode (
+	$slave_rootpw,
 ) {
 	$tftpdir = '/var/lib/tftpboot'
 	$syslinux_files = [
@@ -23,10 +28,17 @@ class mocpoc::headnode (
 		content => 'INTERFACES="eth0"\n',
 		require => Package['isc-dhcp-server'],
 	}
-	# We need this directory to exist for a number of things:
-	file { "${tftpdir}/pxelinux.cfg":
+	# Create subdirectories in the tftp root.
+	file { [
+		"${tftpdir}/pxelinux.cfg",
+		"${tftpdir}/centos"
+		] :
 		ensure => 'directory',
 		require => Package['tftpd-hpa'],
+	}
+	file { "${tftpdir}/centos/ks.cfg":
+		require => File["${tftpdir}/centos"],
+		content => template('mocpoc/ks.cfg.erb'),
 	}
 	Package['tftpd-hpa'] -> File[$syslinux_files]
 	Package['syslinux-common'] -> File[$syslinux_files]
