@@ -1,0 +1,4 @@
+default centos
+label centos
+	kernel centos/vmlinuz
+	append initrd=centos/initrd.img quiet ksdevice=eth0 ks=http://192.168.10.254/centos/ks.cfg

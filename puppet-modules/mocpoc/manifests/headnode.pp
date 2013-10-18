@@ -41,6 +41,10 @@ class mocpoc::headnode (
 		require => File["${tftpdir}/centos"],
 		source => 'puppet:///modules/mocpoc/headnode/initrd.img',
 	}
+	file { "${tftpdir}/centos/pxelinux.cfg":
+		require => File["${tftpdir}/centos"],
+		source => 'puppet:///modules/mocpoc/headnode/pxelinux.cfg-centos',
+	}
 
 	# Copy the bootloader into the tftp directory:
 	mocpoc::syslinux_file { [
@@ -94,21 +98,6 @@ class mocpoc::headnode (
 		ensure => running,
 	}
 	# TODO:
-	# - most of ${tftpdir}/centos.
-	#
-	#   Conceptually, we want something like this, to grab the boot images for
-	#   centos:
-	#
-	#   $centos_mirror = 'http://mirror.mit.edu/centos/6.4/os/x86_64/'
-	#   file { "${tftpdir}/centos/vmlinuz":
-	#   	source => "${centos_mirror}/isolinux/vmlinuz",
-	#   }
-	#   file { "${tftpdir}/centos/initrd.img":
-	#   	source => "${centos_mirror}/isolinux/initrd.img",
-	#   }
-	#
-	#   Unfortunately, this won't work since puppet can't use an http url as a
-	#   source. It's also at least questionable from a security standpoint.
 	# - puppet master
 	# - python-mocutils
 }
