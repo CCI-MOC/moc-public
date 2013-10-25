@@ -105,19 +105,19 @@ def load_resources():
 
 def add_node_to_group(node_id,group_name):
     node=get_entity_by_cond(Node,'node_id==%d'%node_id)
-    group=get_entity_by_cond(Group,'name=="%s"'%group_name)
+    group=get_entity_by_cond(Group,'group_name=="%s"'%group_name)
 
     if node.available:
         node.group=group
 	node.available=False
     else:
-	print "error: node "+node_id+" not available"
+	print "error: node ",node_id," not available"
     session.commit()
 
 
 def create_group(group_name,vm_name,network_id):
     group=Group(group_name)
-    vm_name_cond='name=="%s"'%vm_name
+    vm_name_cond='vm_name=="%s"'%vm_name
     network_id_cond='network_id==%d'%network_id
     if check_available(VM,vm_name_cond):
     	group.vm=get_entity_by_cond(VM,vm_name_cond)
@@ -141,7 +141,7 @@ def check_same_non_empty_list(ls):
     return ls[0]
 
 def deploy_group(group_name):
-    group=get_entity_by_cond(Group,'name=="%s"'%group_name)
+    group=get_entity_by_cond(Group,'group_name=="%s"'%group_name)
     nodes=session.query(Node).filter('group_name=="%s"'%group_name)
     for node in nodes:
 	print "%s %s"%(node.mac_addr,node.manage_ip)
@@ -153,8 +153,9 @@ def deploy_group(group_name):
     switch_id=check_same_non_empty_list(switches)
     if switch_id==False:
 	print "error: ports not in same switch"
-    else:
-	print "same switch ",switch_id
-	switch=get_entity_by_cond(Switch,'switch_id==%d'%switch_id)
-	print switch.script
+        return
+    print "same switch ",switch_id
+    switch=get_entity_by_cond(Switch,'switch_id==%d'%switch_id)
+    print switch.script
+    group.deployed = True
 	

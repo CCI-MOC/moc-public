@@ -6,23 +6,23 @@ Base=declarative_base()
 class Node(Base):
     __tablename__='nodes'
 
-    node_id=Column(Integer,primary_key=True)
-    mac_addr=Column(String)
-    manage_ip=Column(String)
-    available=Column(Boolean)
-    group_name=Column(String,ForeignKey('groups.name'))
-    port_id=Column(Integer,ForeignKey('ports.port_id'))
+    node_id = Column(Integer,primary_key=True)
+    mac_addr = Column(String)
+    manage_ip = Column(String)
+    available = Column(Boolean)
+    group_name = Column(String,ForeignKey('groups.group_name'))
+    port_id = Column(Integer,ForeignKey('ports.port_id'))
 
     #Many to one mapping to group
-    group=relationship("Group",backref=backref('nodes',order_by=node_id))
+    group = relationship("Group",backref=backref('nodes',order_by=node_id))
     #One to one mapping to port
-    port=relationship("Port",backref=backref('node',uselist=False))
+    port = relationship("Port",backref=backref('node',uselist=False))
 
-    def __init__(self,node_id,mac_addr="mac",manage_ip="10.0.0.1",available=True):
-        self.node_id=node_id 
-        self.mac_addr=mac_addr
-        self.manage_ip=manage_ip
-        self.available=available
+    def __init__(self,node_id,mac_addr = "mac",manage_ip = "10.0.0.1",available = True):
+        self.node_id = node_id 
+        self.mac_addr = mac_addr
+        self.manage_ip= manage_ip
+        self.available = available
     def __repr__(self):
         return "<Node(%r %r %r %r %r %r)"%(self.node_id,self.mac_addr,self.manage_ip,self.available,self.group,self.port)
 
@@ -34,28 +34,30 @@ Many to one mapping between node and group
 
 class Group(Base):
     __tablename__='groups'
-    name=Column(String,primary_key=True)
-    vm_name=Column(String,ForeignKey('vms.name'))
+    group_name=Column(String,primary_key=True)
+    vm_name=Column(String,ForeignKey('vms.vm_name'))
     network_id=Column(Integer,ForeignKey('networks.network_id'))
+    deployed = Column(Boolean)
     
     vm=relationship("VM",backref=backref('group',uselist=False))
     network=relationship("Network",backref=backref('group',uselist=False))
-    def __init__(self,name):
-        self.name=name
+    def __init__(self,group_name):
+        self.group_name=group_name
+        self.deployed = False
 
     def __repr__(self):
-        return "<Group(%r %r %r)>"%(self.name,self.vm,self.network)
+        return "<Group(%r %r %r %r)>"%(self.group_name,self.vm,self.network,self.deployed)
 
 class VM(Base):
     __tablename__='vms'
-    name=Column(String,primary_key=True)
+    vm_name=Column(String,primary_key=True)
     available=Column(Boolean)
 
-    def __init__(self,name,available=True):
-        self.name=name
+    def __init__(self,vm_name,available=True):
+        self.vm_name=vm_name
         self.available=available
     def __repr__(self):
-        return "<VM(%r %r)>"%(self.name,self.available)
+        return "<VM(%r %r)>"%(self.vm_name,self.available)
 
 class Network(Base):
     __tablename__='networks'
