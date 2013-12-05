@@ -1,6 +1,9 @@
 from spl_er import *
 import spl_config
 
+import os
+import os.path
+
 """
 string,string,integer
 """
@@ -89,9 +92,9 @@ def add_node_to_group(node_id,group_name):
 
     if node.available:
         node.group=group
-	node.available=False
+        node.available=False
     else:
-	print "error: node ",node_id," not available"
+        print "error: node ",node_id," not available"
     session.commit()
 
 
@@ -100,42 +103,62 @@ def create_group(group_name,vm_name,network_id):
     vm_name_cond='vm_name=="%s"'%vm_name
     network_id_cond='network_id==%d'%network_id
     if check_available(VM,vm_name_cond):
-    	group.vm=get_entity_by_cond(VM,vm_name_cond)
+        group.vm=get_entity_by_cond(VM,vm_name_cond)
         group.vm.available=False
     else:
-    	print "error: vm "+vm_name+" not available"
+        print "error: vm "+vm_name+" not available"
         return
     
     if check_available(Network,network_id_cond):
-	group.network=get_entity_by_cond(Network,network_id_cond)
-	group.network.available=False
+        group.network=get_entity_by_cond(Network,network_id_cond)
+        group.network.available=False
     else:
-	print "error: network "+network_id+" not available"
-	return
+        print "error: network "+network_id+" not available"
+        return
     session.add(group)
     session.commit()
 
 def check_same_non_empty_list(ls):
     for ele in ls:
-	if ele != ls[0]: return False
+        if ele != ls[0]: return False
     return ls[0]
 
 def deploy_group(group_name):
+    """Deploys the group named `group_name`
+
+    This does the following:
+
+    1. Set up the vlan associated with the group
+    2. Connect the head node vm to the vlan
+    3. Supply the necessary machine information to the head node via virtio
+       filesystem.
+    """
     group=get_entity_by_cond(Group,'group_name=="%s"'%group_name)
     nodes=session.query(Node).filter('group_name=="%s"'%group_name)
-    for node in nodes:
-	print "%s %s"%(node.mac_addr,node.manage_ip)
+    machines_filename = os.path.join(
+        spl_config.paths['headnode-config'],
+        str(group.network_id),
+        'machines.txt',
+    )
+  
+    machines_dirname = os.path.dirname(machines_filename) 
+    if not os.path.isdir(machines_dirname):
+        os.mkdir(machines_dirname) 
+    
+    with open(machines_filename, 'w') as f:
+        for node in nodes:
+            f.write(("%s %s\n"%(node.mac_addr,node.manage_ip)))
     print group.network_id
     switches=[]
     for node in nodes:
-	switches.append(node.port.switch_id)
+        switches.append(node.port.switch_id)
     #Check all the nodes in the group are connected to the same switch 
     switch_id=check_same_non_empty_list(switches)
     if switch_id==False:
-	print "error: ports not in same switch"
+        print "error: ports not in same switch"
         return
     print "same switch ",switch_id
     switch=get_entity_by_cond(Switch,'switch_id==%d'%switch_id)
     print switch.script
     group.deployed = True
-	
+    

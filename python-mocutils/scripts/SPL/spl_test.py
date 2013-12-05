@@ -1,5 +1,13 @@
 from spl_control import *
 
+#import os
+#import os.path
+#
+#db_filename = 'spl17.db'
+#
+#if os.path.exists(db_filename):
+#    os.remove(db_filename)
+
 load_resources()
 query_db(Node)
 query_db(VM)
