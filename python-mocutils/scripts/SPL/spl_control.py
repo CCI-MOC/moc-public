@@ -135,6 +135,8 @@ def deploy_group(group_name):
     """
     group=get_entity_by_cond(Group,'group_name=="%s"'%group_name)
     nodes=session.query(Node).filter('group_name=="%s"'%group_name)
+    
+    
     machines_filename = os.path.join(
         spl_config.paths['headnode-config'],
         str(group.network_id),
@@ -155,10 +157,14 @@ def deploy_group(group_name):
     #Check all the nodes in the group are connected to the same switch 
     switch_id=check_same_non_empty_list(switches)
     if switch_id==False:
+        # TODO: raise an exception
         print "error: ports not in same switch"
         return
     print "same switch ",switch_id
     switch=get_entity_by_cond(Switch,'switch_id==%d'%switch_id)
     print switch.script
+
+    os.system(('../vm-vlan up %s %s' % (group.network_id,group.vm_name))) 
+
     group.deployed = True
     

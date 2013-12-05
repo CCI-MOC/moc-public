@@ -30,7 +30,7 @@ case "$1" in
 		brctl addif br${vlan} eth5.${vlan}
 		ifconfig br${vlan} up
 		ifconfig eth5.${vlan} up promisc
-		EDITOR="move_headnode.py ${vlan}" virsh edit ${head}
+		EDITOR="../move_headnode.py ${vlan}" virsh edit ${head}
 		[ -d /var/lib/headnode-config/${vlan} ] || mkdir /var/lib/headnode-config/${vlan}
 		printf '%s\n' "${head}" > /etc/vlans/${vlan}
 		virsh destroy "${head}" ; virsh start "${head}"
