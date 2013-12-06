@@ -152,8 +152,10 @@ def deploy_group(group_name):
             f.write(("%s %s\n"%(node.mac_addr,node.manage_ip)))
     print group.network_id
     switches=[]
+    ports='';
     for node in nodes:
         switches.append(node.port.switch_id)
+        ports+=str(node.port.port_no)+','
     #Check all the nodes in the group are connected to the same switch 
     switch_id=check_same_non_empty_list(switches)
     if switch_id==False:
@@ -161,9 +163,15 @@ def deploy_group(group_name):
         print "error: ports not in same switch"
         return
     print "same switch ",switch_id
-    switch=get_entity_by_cond(Switch,'switch_id==%d'%switch_id)
-    print switch.script
-
+#    switch=get_entity_by_cond(Switch,'switch_id==%d'%switch_id)
+#    print switch.script
+#    TODO: factor this out so we can get the switch type from the database
+    import cisco_snmp as switch
+    print group.network_id
+    switch.make_remove_vlans(str(group.network_id),True)
+    print 'ports'+ports
+    switch.edit_ports_on_vlan(ports,str(group.network_id),True)
+    
     os.system(('../vm-vlan up %s %s' % (group.network_id,group.vm_name))) 
 
     group.deployed = True

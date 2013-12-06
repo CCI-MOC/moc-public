@@ -10,5 +10,5 @@ file_names={
 paths={
     # This should be the path to the virtio filesystems provided by death-star.
     # It will contain subdirectories named after the corresponding vlan id.
-    "headnode-config" : ".",
+    "headnode-config" : "/var/lib/headnode-config",
 }
