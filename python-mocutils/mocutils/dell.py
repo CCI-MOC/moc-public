@@ -32,9 +32,8 @@ def edit_ports_on_vlan(port_ids,vlan_id,add,switch_ip='192.168.3.245'):
 
     hexstr="%x"%x
     hexstr=hexstr.zfill(6)
-    cmd=''''snmpset -v1 -cDell_Network_Manager 192.168.3.245 \
+    cmd='''snmpset -v1 -cDell_Network_Manager 192.168.3.245 \
 dot1qVlanStaticEgressPorts.%s x '%s' \
-dot1qVlanStaticUntaggedPorts.%s x '%s' \
-dot1qVlanStaticRowStatus.108 i 4'''%(vlan_id,hexstr,vlan_id,hexstr)
+dot1qVlanStaticUntaggedPorts.%s x '%s' '''%(vlan_id,hexstr,vlan_id,hexstr)
     print cmd
     os.system(cmd)
