@@ -1,7 +1,12 @@
 
 from flask import Flask, jsonify, abort, make_response, request
+from spl_er import *
+from spl_control import *
+import spl_config
 
 app = Flask(__name__)
+
+
 
 '''
 
@@ -26,6 +31,18 @@ DELETE
 
 '''
 
+'''
+get_groups()
+
+1. query the database from Group
+2. get a list of groups
+2. jsonify the list
+
+
+
+'''
+
+
 groups = [
     {
         'group_name': 'group1',
@@ -47,6 +64,7 @@ def not_found(error):
 
 @app.route('/groups', methods = ['GET'])
 def get_groups():
+    query_db(Group)
     return jsonify( { 'groups': groups } )
 
 @app.route('/groups/<group_name>', methods = ['GET'])
