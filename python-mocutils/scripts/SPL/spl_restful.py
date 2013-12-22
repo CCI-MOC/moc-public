@@ -69,10 +69,16 @@ def get_groups():
 
 @app.route('/groups/<group_name>', methods = ['GET'])
 def get_group(group_name):
-    group = filter(lambda g: g['group_name'] == group_name, groups)
-    if len(group) == 0:
-        abort(404)
-    return jsonify({'group':group[0]})
+    group = spl_control.get_entity_by_cond(spl_er.Group,"group_name=='%s'"%group_name)
+    
+    group_dict ={
+        'group_name': group.group_name,
+        'vm_name': group.vm_name,
+        'network_id': group.network_id,
+        'deployed': group.deployed,
+        }
+    return jsonify(group_dict)
+ 
 
 @app.route('/groups', methods = ['POST'])
 def create_group():
