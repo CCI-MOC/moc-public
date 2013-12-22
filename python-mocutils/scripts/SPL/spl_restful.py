@@ -1,7 +1,7 @@
 
 from flask import Flask, jsonify, abort, make_response, request
-from spl_er import *
-from spl_control import *
+import spl_control
+import spl_er
 import spl_config
 
 app = Flask(__name__)
@@ -84,6 +84,8 @@ def create_group():
         'network_id' : request.json['network_id'],
         'deployed' : False
         }
+    print group
+    spl_control.create_group(group['group_name'],group['vm_name'],group['network_id'])
     groups.append(group)
     return jsonify({ 'group':group}), 201
 

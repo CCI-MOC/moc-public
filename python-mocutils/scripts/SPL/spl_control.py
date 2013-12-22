@@ -61,6 +61,7 @@ def check_available(classname,cond):
     classname specifies which kind of objects
     cond is a string like "node_id==2"
     """
+    print classname, cond
     return session.query(classname).filter(cond).first().available
 
 def get_entity_by_cond(classname,cond):
@@ -99,6 +100,8 @@ def add_node_to_group(node_id,group_name):
 
 
 def create_group(group_name,vm_name,network_id):
+    #str,str,int
+    print "create a group"
     group=Group(group_name)
     vm_name_cond='vm_name=="%s"'%vm_name
     network_id_cond='network_id==%d'%network_id
