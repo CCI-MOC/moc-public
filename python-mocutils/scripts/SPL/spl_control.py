@@ -55,6 +55,7 @@ def query_db(classname):
     all=session.query(classname).all()
     for some in all:
         print some
+    return all
 
 def check_available(classname,cond):
     """

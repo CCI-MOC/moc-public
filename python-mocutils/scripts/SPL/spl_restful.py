@@ -64,8 +64,17 @@ def not_found(error):
 
 @app.route('/groups', methods = ['GET'])
 def get_groups():
-    query_db(Group)
-    return jsonify( { 'groups': groups } )
+    groups = []
+    for group in  spl_control.query_db(spl_er.Group):
+        print group
+        groups.append({
+                'group_name':group.group_name,
+                'vm_name':group.vm_name,
+                'network_id':group.network_id,
+                'deployed':group.deployed
+                })
+
+    return jsonify({'groups': groups} )
 
 @app.route('/groups/<group_name>', methods = ['GET'])
 def get_group(group_name):
