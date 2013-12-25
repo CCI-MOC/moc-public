@@ -25,10 +25,20 @@ def show_table(cmd):
     table = parts.group(1)
     spl_control.query_db(class_name[table])
 
+def show_all():
+    spl_control.query_db(spl_er.Node)
+    spl_control.query_db(spl_er.Port)
+    spl_control.query_db(spl_er.Network)
+    spl_control.query_db(spl_er.VM)
+    spl_control.query_db(spl_er.Switch)
+    spl_control.query_db(spl_er.Group)
+
 while True:
     cmd = raw_input('spl>')
     if spl_command_pattern.create_group.match(cmd):
         create_group(cmd)
+    elif cmd == 'show all':
+        show_all()
     elif spl_command_pattern.destroy_group.match(cmd):
         print 'destroy a group'
     elif spl_command_pattern.show_group.match(cmd):
@@ -41,3 +51,5 @@ while True:
         print 'ch vlan'
     elif spl_command_pattern.change_head.match(cmd):
         print 'ch head'
+    elif cmd == 'help':
+        print spl_command_pattern.help_text

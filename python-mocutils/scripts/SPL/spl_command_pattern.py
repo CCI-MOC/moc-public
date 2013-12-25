@@ -1,5 +1,6 @@
 import re
-'''
+
+help_text='''
 show all
 show <specific table>
 show free [specific table]
