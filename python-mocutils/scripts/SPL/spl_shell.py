@@ -2,6 +2,11 @@ import spl_command_pattern
 import spl_control
 import spl_er
 
+class_name={'group':spl_er.Group,
+            'vm':spl_er.VM,
+            'network':spl_er.Network,
+            'node':spl_er.Node}
+
 def create_group(cmd):
     '''
     do the neccessary parsing
@@ -15,6 +20,11 @@ def create_group(cmd):
     spl_control.create_group(group_name,vm_name,network_id)
 
 
+def show_table(cmd):
+    parts = spl_command_pattern.show_table.match(cmd)
+    table = parts.group(1)
+    spl_control.query_db(class_name[table])
+
 while True:
     cmd = raw_input('spl>')
     if spl_command_pattern.create_group.match(cmd):
@@ -26,7 +36,7 @@ while True:
     elif spl_command_pattern.show_free_table.match(cmd):
         print 'free table'
     elif spl_command_pattern.show_table.match(cmd):
-        print 'table'
+        show_table(cmd)
     elif spl_command_pattern.change_vlan.match(cmd):
         print 'ch vlan'
     elif spl_command_pattern.change_head.match(cmd):
