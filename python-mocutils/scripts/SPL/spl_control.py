@@ -34,6 +34,16 @@ def add_node_to_group(node_id,group_name):
         print "error: node ",node_id," not available"
     session.commit()
 
+def remove_node_from_group(node_id,group_name):
+    node = get_entity_by_cond(Node, 'node_id==%d'%node_id)
+    if node.group_name != group_name:
+        print 'node',node_id,'not in',group_name
+        return
+    node.group = None
+    node.available = True
+
+    
+
 
 def create_group(group_name,vm_name,network_id):
     #str,str,int

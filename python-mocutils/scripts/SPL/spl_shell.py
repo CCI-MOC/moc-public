@@ -29,6 +29,16 @@ def add_node(cmd):
     print 'add',node_id,'to',group_name
     spl_control.add_node_to_group(node_id,group_name)
 
+def remove_node(cmd):
+    '''
+    remove one node from a group
+    '''
+    parts = spl_command_pattern.remove.match(cmd)
+    node_id = int(parts.group(1))
+    group_name = parts.group(2)
+    print 'add',node_id,'to',group_name
+    spl_control.remove_node_from_group(node_id,group_name)
+
 def show_table(cmd):
     parts = spl_command_pattern.show_table.match(cmd)
     table = parts.group(1)
@@ -69,6 +79,9 @@ while True:
     elif spl_command_pattern.add.match(cmd):
         print 'add node'
         add_node(cmd)
+    elif spl_command_pattern.remove.match(cmd):
+        print 'remove node'
+        remove_node(cmd)
     elif cmd == 'exit':
         #Might need check before exit
         print 'Bye for now'
