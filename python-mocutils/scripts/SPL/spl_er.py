@@ -24,7 +24,7 @@ class Node(Base):
         self.manage_ip= manage_ip
         self.available = available
     def __repr__(self):
-        return "<Node(%r %r %r %r %r %r)"%(self.node_id,self.mac_addr,self.manage_ip,self.available,self.group,self.port)
+        return "<Node(%r %r %r %r %r %r)"%(self.node_id,self.mac_addr,self.manage_ip,self.available,self.group.group_name if self.group else None,self.port)
 
 """
 One to one mapping between group and vm

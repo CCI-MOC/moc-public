@@ -19,6 +19,15 @@ def create_group(cmd):
     print group_name, network_id, vm_name
     spl_control.create_group(group_name,vm_name,network_id)
 
+def add_node(cmd):
+    '''
+    add one node to a group
+    '''
+    parts = spl_command_pattern.add.match(cmd)
+    node_id = int(parts.group(1))
+    group_name = parts.group(2)
+    print 'add',node_id,'to',group_name
+    spl_control.add_node_to_group(node_id,group_name)
 
 def show_table(cmd):
     parts = spl_command_pattern.show_table.match(cmd)
@@ -57,5 +66,15 @@ while True:
         print 'ch vlan'
     elif spl_command_pattern.change_head.match(cmd):
         print 'ch head'
-    elif cmd == 'help':
+    elif spl_command_pattern.add.match(cmd):
+        print 'add node'
+        add_node(cmd)
+    elif cmd == 'exit':
+        #Might need check before exit
+        print 'Bye for now'
+        exit()
+    else:
+        print 'invalid command'
+        print 'usage'
         print spl_command_pattern.help_text
+        
