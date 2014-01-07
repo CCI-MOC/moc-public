@@ -23,6 +23,12 @@ def create_group(cmd):
 def show_table(cmd):
     parts = spl_command_pattern.show_table.match(cmd)
     table = parts.group(1)
+    if table not in class_name:
+        print 'no such table'
+        print 'available tables are:'
+        for key in class_name:
+            print key
+        return
     spl_control.query_db(class_name[table])
 
 def show_all():
