@@ -74,8 +74,7 @@ def deploy_group(group_name):
     """
     group=get_entity_by_cond(Group,'group_name=="%s"'%group_name)
     nodes=session.query(Node).filter('group_name=="%s"'%group_name)
-    
-    
+
     machines_filename = os.path.join(
         spl_config.paths['headnode-config'],
         str(group.network_id),
@@ -89,6 +88,7 @@ def deploy_group(group_name):
     with open(machines_filename, 'w') as f:
         for node in nodes:
             f.write(("%s %s\n"%(node.mac_addr,node.manage_ip)))
+
     print group.network_id
     switches=[]
     ports='';
@@ -102,16 +102,21 @@ def deploy_group(group_name):
         print "error: ports not in same switch"
         return
     print "same switch ",switch_id
-#    switch=get_entity_by_cond(Switch,'switch_id==%d'%switch_id)
-#    print switch.script
-#    TODO: factor this out so we can get the switch type from the database
-    import cisco_snmp as switch
+    switch=get_entity_by_cond(Switch,'switch_id==%d'%switch_id)
+    print switch.script
+    import cisco_snmp
+    switch_drivers = {'cisco_snmp.py':cisco_snmp}
+    driver = switch_drivers[switch.script]
+    print driver
+    
+    
+    
     print group.network_id
-    switch.make_remove_vlans(str(group.network_id),True)
+    driver.make_remove_vlans(str(group.network_id),True)
     print 'ports'+ports
-    switch.edit_ports_on_vlan(ports,str(group.network_id),True)
+    driver.edit_ports_on_vlan(ports,str(group.network_id),True)
     
     os.system(('../vm-vlan up %s %s' % (group.network_id,group.vm_name))) 
-
+    
     group.deployed = True
     
