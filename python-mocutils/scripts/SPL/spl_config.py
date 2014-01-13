@@ -5,6 +5,7 @@ file_names={
     "switch":"switch.txt",
     "port":"port.txt",
     "connect":"connect.txt",
+    "user":"user.txt"
 }
 
 paths={

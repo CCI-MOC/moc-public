@@ -5,7 +5,8 @@ import spl_er
 class_name={'group':spl_er.Group,
             'vm':spl_er.VM,
             'network':spl_er.Network,
-            'node':spl_er.Node}
+            'node':spl_er.Node,
+            'user':spl_er.User}
 
 def create_group(cmd):
     '''
@@ -57,6 +58,21 @@ def show_all():
     spl_control.query_db(spl_er.VM)
     spl_control.query_db(spl_er.Switch)
     spl_control.query_db(spl_er.Group)
+    spl_control.query_db(spl_er.User)
+
+def auth(user_name,password):
+    user = spl_control.get_entity_by_cond(spl_er.User,'user_name=="%s"'%(user_name))
+    if not user:
+        return False
+    return user.password == password
+
+while True:
+    user_name = raw_input('user:')
+    password = raw_input("password:")
+    if auth(user_name,password):
+        break
+    print 'invalid user/password combination!'
+
 
 while True:
     cmd = raw_input('spl>')

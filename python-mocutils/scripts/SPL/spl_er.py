@@ -109,6 +109,17 @@ class Switch(Base):
     def __repr__(self):
         return "Switch(%r %r)"%(self.switch_id,self.script)
 
+class User(Base):
+    __tablename__ = 'users'
+    user_name = Column(String,primary_key=True)
+    user_type = Column(String)
+    password = Column(String)
+    def __init__(self,user_name,user_type,password):
+        self.user_name = user_name
+        self.user_type = user_type
+        self.password = password
+    def __repr__(self):
+        return "User<%r %r %r>"%(self.user_name,self.user_type,self.password)
 
 engine=create_engine('sqlite:///spl.db',echo=False)
 Base.metadata.create_all(engine)

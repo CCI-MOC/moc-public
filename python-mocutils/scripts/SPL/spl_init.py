@@ -54,6 +54,14 @@ def connect_node_to_port():
         port=spl_control.get_entity_by_cond(Port,"port_id==%d"%int(d["port_id"]))
         node.port=port
     session.commit()
+
+def add_users():
+    keys=["user_name","user_type","password"]
+    for line in open(spl_config.file_names["user"]):
+        values = line.rstrip().split(" ")
+        d = dict(zip(keys,values))
+        session.add(User(d["user_name"],d["user_type"],d["password"]))
+    session.commit()
     
 def load_resources():
     create_node_pool()
@@ -62,6 +70,7 @@ def load_resources():
     create_switch_pool()
     create_port_pool()
     connect_node_to_port()
+    add_users()
 
 if __name__=='__main__':
     load_resources()
