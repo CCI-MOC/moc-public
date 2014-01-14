@@ -12,11 +12,12 @@ class Node(Base):
     available = Column(Boolean)
     group_name = Column(String,ForeignKey('groups.group_name'))
     port_id = Column(Integer,ForeignKey('ports.port_id'))
-
     #Many to one mapping to group
     group = relationship("Group",backref=backref('nodes',order_by=node_id))
     #One to one mapping to port
     port = relationship("Port",backref=backref('node',uselist=False))
+    
+
 
     def __init__(self,node_id,mac_addr = "mac",manage_ip = "10.0.0.1",available = True):
         self.node_id = node_id 
@@ -38,15 +39,19 @@ class Group(Base):
     vm_name=Column(String,ForeignKey('vms.vm_name'))
     network_id=Column(Integer,ForeignKey('networks.network_id'))
     deployed = Column(Boolean)
+    owner_name = Column(String,ForeignKey('users.user_name'))
     
     vm=relationship("VM",backref=backref('group',uselist=False))
     network=relationship("Network",backref=backref('group',uselist=False))
+    
+    #Many to one mapping to User
+    owner = relationship("User",backref=backref('groups',order_by=group_name))
     def __init__(self,group_name):
         self.group_name=group_name
         self.deployed = False
 
     def __repr__(self):
-        return "<Group(%r %r %r %r)>"%(self.group_name,self.vm,self.network,self.deployed)
+      return "<Group(%r %r %r %r %r)>"%(self.group_name,self.vm,self.network,self.deployed,self.owner_name)
 
 class VM(Base):
     __tablename__='vms'

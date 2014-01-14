@@ -70,7 +70,8 @@ while True:
     user_name = raw_input('user:')
     password = raw_input("password:")
     if auth(user_name,password):
-        break
+      spl_control.login_user(user_name)
+      break
     print 'invalid user/password combination!'
 
 
