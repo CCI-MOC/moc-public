@@ -1,11 +1,11 @@
 file_names={
-    "node":"node.txt",
-    "network":"network.txt",
-    "vm":"vm.txt",
-    "switch":"switch.txt",
-    "port":"port.txt",
-    "connect":"connect.txt",
-    "user":"user.txt"
+    "node":"data/node.txt",
+    "network":"data/network.txt",
+    "vm":"data/vm.txt",
+    "switch":"data/switch.txt",
+    "port":"data/port.txt",
+    "connect":"data/connect.txt",
+    "user":"data/user.txt"
 }
 
 paths={
