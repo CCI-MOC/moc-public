@@ -38,6 +38,7 @@ def add_node_to_group(node_id,group_name):
   else:
     print "error: node ",node_id," not available"
     return
+  print group.nodes 
   session.commit()
 
 def remove_node_from_group(node_id,group_name):
@@ -74,7 +75,6 @@ def create_group(group_name,vm_name,network_id):
   user = get_entity_by_cond(User,'user_name=="%s"'%current_user)
   print user
   group.owner = user
-  print user.user_name
   session.add(group)
   session.commit()
 

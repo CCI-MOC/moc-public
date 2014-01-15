@@ -13,7 +13,7 @@ app = Flask(__name__)
 GET
 /groups
 /groups/group_name
-
+/groups/group_name/nodes
 404 
 
 POST
@@ -88,6 +88,17 @@ def get_group(group_name):
         }
     return jsonify(group_dict)
  
+@app.route('/groups/<group_name>/nodes', methods = ['GET'])
+def get_group_nodes(group_name):
+    group = spl_control.get_entity_by_cond(spl_er.Group,"group_name=='%s'"%group_name)
+    nodes = []
+    print group
+    for node in group.nodes:
+        print node
+        nodes.append(node.node_id)
+    nodes_dict={"nodes":nodes}
+    return jsonify(nodes_dict)
+    
 
 @app.route('/groups', methods = ['POST'])
 def create_group():
