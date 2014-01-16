@@ -3,6 +3,8 @@ from flask import Flask, jsonify, abort, make_response, request
 import spl_control
 import spl_er
 import spl_config
+from flask.ext.httpauth import HTTPBasicAuth
+auth = HTTPBasicAuth()
 
 app = Flask(__name__)
 
@@ -58,12 +60,23 @@ groups = [
     }
 ]
 
+class G():
+    pass
+g=G()
+
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
+@auth.verify_password
+def verify_password(username, password):
+    g.username=username
+    return True
+
 @app.route('/groups', methods = ['GET'])
+@auth.login_required
 def get_groups():
+    print g.username
     groups = []
     for group in  spl_control.query_db(spl_er.Group):
         print group
