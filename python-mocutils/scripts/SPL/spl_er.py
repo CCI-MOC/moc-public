@@ -119,7 +119,7 @@ class User(Base):
     user_name = Column(String,primary_key=True)
     user_type = Column(String)
     password = Column(String)
-    def __init__(self,user_name,user_type,password):
+    def __init__(self,user_name,password,user_type="plain"):
         self.user_name = user_name
         self.user_type = user_type
         self.password = password

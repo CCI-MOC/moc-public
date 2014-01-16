@@ -56,11 +56,11 @@ def connect_node_to_port():
     session.commit()
 
 def add_users():
-    keys=["user_name","user_type","password"]
+    keys=["user_name","password","user_type"]
     for line in open(spl_config.file_names["user"]):
         values = line.rstrip().split(" ")
         d = dict(zip(keys,values))
-        session.add(User(d["user_name"],d["user_type"],d["password"]))
+        session.add(User(d["user_name"],d["password"],d["user_type"]))
     session.commit()
     
 def load_resources():

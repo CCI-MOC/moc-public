@@ -62,9 +62,15 @@ def show_all():
 
 def auth(user_name,password):
     user = spl_control.get_entity_by_cond(spl_er.User,'user_name=="%s"'%(user_name))
+    print user
     if not user:
         return False
     return user.password == password
+
+def create_user(cmd):
+    user_name,password = spl_command_pattern.create_user.match(cmd).groups()
+    spl_control.create_user(user_name,password)
+    
 
 while True:
     user_name = raw_input('user:')
@@ -99,6 +105,8 @@ while True:
     elif spl_command_pattern.remove.match(cmd):
         print 'remove node'
         remove_node(cmd)
+    elif spl_command_pattern.create_user.match(cmd):
+        create_user(cmd)
     elif cmd == 'exit':
         #Might need check before exit
         print 'Bye for now'

@@ -16,7 +16,7 @@ change <group_name> head to <vm_name>
 deploy
 exit
 '''
-
+create_user = re.compile('^create user (\w+) (\w+)$')
 
 create_group = re.compile('^create group (\w+) vlan (\d+) head-node (\S+)')
 destroy_group = re.compile('^destroy group (\w+)$')
