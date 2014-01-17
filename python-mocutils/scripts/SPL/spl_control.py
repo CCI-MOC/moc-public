@@ -83,6 +83,18 @@ def create_group(group_name,vm_name,network_id):
     session.add(group)
     session.commit()
 
+def destroy_group(group_name):
+    group = get_entity_by_cond(Group,'group_name=="%s"'%group_name)
+    if not group:
+        print 'Group does not exist'
+        return
+    for node in group.nodes:
+        node.available = True
+    group.nodes = []
+    session.delete(group)
+    session.commit()
+
+
 def check_same_non_empty_list(ls):
     for ele in ls:
         if ele != ls[0]: return False

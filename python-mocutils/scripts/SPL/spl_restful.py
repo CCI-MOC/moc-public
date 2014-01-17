@@ -123,8 +123,11 @@ def create_group():
     spl_control.create_group(group['group_name'],group['vm_name'],group['network_id'])
     groups.append(group)
     return jsonify({ 'group':group}), 201
-
-
+    
+@app.route('/groups/<group_name>', methods = ['DELETE'])
+def destroy_group(group_name):
+    spl_control.destroy_group(group_name)
+    return get_groups()
 
 
 
