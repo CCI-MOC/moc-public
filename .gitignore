@@ -16,3 +16,4 @@ vmlinuz
 initrd.img
 SPL/build
 SPL/dist
+.venv
