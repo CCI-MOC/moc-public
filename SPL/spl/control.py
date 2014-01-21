@@ -1,5 +1,5 @@
-from spl_er import *
-import spl_config
+from er import *
+import spl.config
 
 import os
 import os.path
@@ -114,7 +114,7 @@ def deploy_group(group_name):
     nodes=session.query(Node).filter('group_name=="%s"'%group_name)
 
     machines_filename = os.path.join(
-        spl_config.paths['headnode-config'],
+        spl.config.paths['headnode-config'],
         str(group.network_id),
         'machines.txt',
     )

@@ -1,4 +1,4 @@
-from spl_control import *
+from spl.control import *
 
 #import os
 #import os.path
