@@ -39,8 +39,7 @@ class Group(Base):
     vm_name=Column(String,ForeignKey('vms.vm_name'))
     network_id=Column(Integer,ForeignKey('networks.network_id'))
     deployed = Column(Boolean)
-    owner_name = Column(String,ForeignKey('users.user_name'))
-    
+    owner_name = Column(String,ForeignKey('users.user_name'))    
     vm=relationship("VM",backref=backref('group',uselist=False))
     network=relationship("Network",backref=backref('group',uselist=False))
     
