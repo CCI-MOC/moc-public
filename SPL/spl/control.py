@@ -1,5 +1,5 @@
-from spl_er import *
-import spl_config
+from er import *
+import spl.config
 
 import os
 import os.path
@@ -34,8 +34,14 @@ def get_entity_by_cond(classname,cond):
 
 
 def add_node_to_group(node_id,group_name):
+    #ownership check
+    
     node=get_entity_by_cond(Node,'node_id==%d'%node_id)
     group=get_entity_by_cond(Group,'group_name=="%s"'%group_name)
+    
+    if group.owner_name!=current_user and current_user!="admin":
+        print 'access denied'
+        return
     
     if node.available:
         node.group=group
@@ -48,6 +54,12 @@ def add_node_to_group(node_id,group_name):
 
 def remove_node_from_group(node_id,group_name):
     node = get_entity_by_cond(Node, 'node_id==%d'%node_id)
+    group = get_entity_by_cond(Group,'group_name=="%s"'%group_name)
+    
+    if group.owner_name!=current_user and current_user!="admin":
+        print 'access denied'
+        return 
+    
     if node.group_name != group_name:
         print 'node',node_id,'not in',group_name
         return
@@ -83,6 +95,24 @@ def create_group(group_name,vm_name,network_id):
     session.add(group)
     session.commit()
 
+def destroy_group(group_name):
+    #ownership check
+    group = get_entity_by_cond(Group,'group_name=="%s"'%group_name)
+    if not group:
+        print 'Group does not exist'
+        return
+    
+    if current_user!="admin" and group_name.owner_name != current_user:
+        print 'access denied'
+        return
+    
+    for node in group.nodes:
+        node.available = True
+    group.nodes = []
+    session.delete(group)
+    session.commit()
+
+
 def check_same_non_empty_list(ls):
     for ele in ls:
         if ele != ls[0]: return False
@@ -102,7 +132,7 @@ def deploy_group(group_name):
     nodes=session.query(Node).filter('group_name=="%s"'%group_name)
 
     machines_filename = os.path.join(
-        spl_config.paths['headnode-config'],
+        spl.config.paths['headnode-config'],
         str(group.network_id),
         'machines.txt',
     )

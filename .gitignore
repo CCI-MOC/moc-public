@@ -14,3 +14,8 @@ python-mocutils/dist
 *.changes
 vmlinuz
 initrd.img
+SPL/build
+SPL/dist
+.venv
+spl.egg-info
+*.db
