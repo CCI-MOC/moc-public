@@ -26,7 +26,6 @@ def check_available(classname,cond):
     classname specifies which kind of objects
     cond is a string like "node_id==2"
     """
-    print classname, cond
     return session.query(classname).filter(cond).first().available
 
 def get_entity_by_cond(classname,cond):
@@ -49,7 +48,6 @@ def add_node_to_group(node_id,group_name):
     else:
         print "error: node ",node_id," not available"
         return
-    print group.nodes 
     session.commit()
 
 def remove_node_from_group(node_id,group_name):
@@ -71,7 +69,7 @@ def remove_node_from_group(node_id,group_name):
 
 def create_group(group_name,vm_name,network_id):
     #str,str,int
-    print "create a group"
+
     group=Group(group_name)
     vm_name_cond='vm_name=="%s"'%vm_name
     network_id_cond='network_id==%d'%network_id
@@ -88,9 +86,7 @@ def create_group(group_name,vm_name,network_id):
     else:
         print "error: network "+network_id+" not available"
         return
-    print current_user
     user = get_entity_by_cond(User,'user_name=="%s"'%current_user)
-    print user
     group.owner = user
     session.add(group)
     session.commit()
@@ -145,7 +141,7 @@ def deploy_group(group_name):
         for node in nodes:
             f.write(("%s %s\n"%(node.mac_addr,node.manage_ip)))
 
-    print group.network_id
+
     switches=[]
     ports='';
     for node in nodes:
@@ -157,13 +153,13 @@ def deploy_group(group_name):
         # TODO: raise an exception
         print "error: ports not in same switch"
         return
-    print "same switch ",switch_id
+
     switch=get_entity_by_cond(Switch,'switch_id==%d'%switch_id)
-    print switch.script
+
     import cisco_snmp
     switch_drivers = {'cisco_snmp.py':cisco_snmp}
     driver = switch_drivers[switch.script]
-    print driver
+
         
     
     
