@@ -17,7 +17,7 @@ def create_group(cmd):
     group_name = parts.group(1)
     network_id = int(parts.group(2))
     vm_name = parts.group(3)
-    print group_name, network_id, vm_name
+    #print group_name, network_id, vm_name
     spl.control.create_group(group_name,vm_name,network_id)
 
 def add_node(cmd):
@@ -27,7 +27,7 @@ def add_node(cmd):
     parts = spl.command_pattern.add.match(cmd)
     node_id = int(parts.group(1))
     group_name = parts.group(2)
-    print 'add',node_id,'to',group_name
+
     spl.control.add_node_to_group(node_id,group_name)
 
 def remove_node(cmd):
@@ -37,7 +37,7 @@ def remove_node(cmd):
     parts = spl.command_pattern.remove.match(cmd)
     node_id = int(parts.group(1))
     group_name = parts.group(2)
-    print 'add',node_id,'to',group_name
+    #print 'add',node_id,'to',group_name
     spl.control.remove_node_from_group(node_id,group_name)
 
 def show_table(cmd):
