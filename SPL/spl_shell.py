@@ -70,7 +70,7 @@ def auth(user_name,password):
 def create_user(cmd):
     user_name,password = spl.command_pattern.create_user.match(cmd).groups()
     spl.control.create_user(user_name,password)
-    
+
 
 while True:
     user_name = raw_input('user:')
@@ -115,4 +115,4 @@ while True:
         print 'invalid command'
         print 'usage'
         print spl.command_pattern.help_text
-        
+

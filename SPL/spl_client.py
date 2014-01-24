@@ -21,7 +21,7 @@ def get_group(group_name):
 def get_group_nodes(group_name):
     r = requests.get('http://%s/groups/%s/nodes'%(ip_addr,group_name))
     print r.text
-    
+
 def add_node_to_group(group_name,node_id):
     r = requests.get('http://%s/groups/%s/nodes/add/%d'%(ip_addr,group_name,node_id))
     print r.text
@@ -33,10 +33,10 @@ def remove_node_from_group(group_name,node_id):
 def destroy_group(group_name):
     r = requests.delete('http://%s/groups/%s'%(ip_addr,group_name),auth=('linzertorte',101450))
     print r.text
-    
 
-    
-    
 
-    
-    
+
+
+
+
+

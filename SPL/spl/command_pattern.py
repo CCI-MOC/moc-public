@@ -36,7 +36,7 @@ show_group = re.compile('^show group (\w+)')
 show_free_table = re.compile('^show free (\w+)')
 # Show a specific table
 show_table = re.compile('^show (\w+)')
-  
+
 
 # Change a group's vlan
 change_vlan = re.compile('^change (\w+) vlan to (\d+)')

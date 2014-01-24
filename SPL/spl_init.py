@@ -12,7 +12,7 @@ def create_node_pool():
 
 def create_network_pool():
     keys=['network_id','network_technology']
-    
+
     for line in open(spl.config.file_names["network"]):
         values=line.rstrip().split(" ")
         d=dict(zip(keys,values))
@@ -62,7 +62,7 @@ def add_users():
         d = dict(zip(keys,values))
         session.add(User(d["user_name"],d["password"],d["user_type"]))
     session.commit()
-    
+
 def load_resources():
     create_node_pool()
     create_network_pool()

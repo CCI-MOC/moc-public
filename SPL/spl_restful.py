@@ -16,16 +16,16 @@ GET
 /groups
 /groups/group_name
 /groups/group_name/nodes
-404 
+404
 
 POST
-curl -i -H "Content-Type: application/json" 
+curl -i -H "Content-Type: application/json"
  -X POST -d '{"group_name":"group3","vm_name":"vm3","network_id":103}'
   http://localhost:5000/groups
 
 PUT
-curl -i -H "Content-Type: application/json" 
- -X PUT -d '{"network_id":600}' 
+curl -i -H "Content-Type: application/json"
+ -X PUT -d '{"network_id":600}'
  http://localhost:5000/groups/group1
 
 DELETE
@@ -66,7 +66,7 @@ def get_groups():
 @app.route('/groups/<group_name>', methods = ['GET'])
 def get_group(group_name):
     group = spl.control.get_entity_by_cond(spl.er.Group,"group_name=='%s'"%group_name)
-    
+
     group_dict ={
         'group_name': group.group_name,
         'vm_name': group.vm_name,
@@ -74,7 +74,7 @@ def get_group(group_name):
         'deployed': group.deployed,
         }
     return jsonify(group_dict)
- 
+
 @app.route('/groups/<group_name>/nodes', methods = ['GET'])
 def get_group_nodes(group_name):
     group = spl.control.get_entity_by_cond(spl.er.Group,"group_name=='%s'"%group_name)
@@ -95,7 +95,7 @@ def add_node_to_group(group_name,node_id):
         abort(400)
     node.group = group
     return get_group_nodes(group_name)
-    
+
 @app.route('/groups/<group_name>/nodes/remove/<node_id>',methods = ['GET'])
 def remove_node_from_group(group_name,node_id):
     node_id = int(node_id)
@@ -123,7 +123,7 @@ def create_group():
     spl.control.create_group(group['group_name'],group['vm_name'],group['network_id'])
     groups.append(group)
     return jsonify({ 'group':group}), 201
-    
+
 @app.route('/groups/<group_name>', methods = ['DELETE'])
 def destroy_group(group_name):
     spl.control.destroy_group(group_name)
@@ -133,5 +133,5 @@ def destroy_group(group_name):
 
 if __name__ == '__main__':
     app.run(debug = True)
-    
- 
+
+
