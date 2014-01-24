@@ -1,5 +1,5 @@
 
-from setuptools import setup, find_packages
+from setuptools import setup
 setup(name='spl',
       version='1.0',
       url='https://github.com/CCI-MOC/moc-public',
