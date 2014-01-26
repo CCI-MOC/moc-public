@@ -9,31 +9,6 @@ auth = HTTPBasicAuth()
 app = Flask(__name__)
 
 
-
-'''
-
-GET
-/groups
-/groups/group_name
-/groups/group_name/nodes
-404
-
-POST
-curl -i -H "Content-Type: application/json"
- -X POST -d '{"group_name":"group3","vm_name":"vm3","network_id":103}'
-  http://localhost:5000/groups
-
-PUT
-curl -i -H "Content-Type: application/json"
- -X PUT -d '{"network_id":600}'
- http://localhost:5000/groups/group1
-
-DELETE
- curl -i -X DELETE http://localhost:5000/groups/group1
-
-'''
-
-
 class G():
     pass
 g=G()
@@ -42,10 +17,12 @@ g=G()
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
+
 @auth.verify_password
 def verify_password(username, password):
     g.username=username
     return True
+
 
 @app.route('/groups', methods = ['GET'])
 @auth.login_required
@@ -62,6 +39,7 @@ def get_groups():
                 })
 
     return jsonify({'groups': groups} )
+
 
 @app.route('/groups/<group_name>', methods = ['GET'])
 def get_group(group_name):
