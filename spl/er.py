@@ -16,9 +16,9 @@ class Node(Base):
     group      = relationship("Group",backref=backref('nodes',order_by=node_id))
     #One to one mapping to port
     port       = relationship("Port",backref=backref('node',uselist=False))
-    
+
     def __init__(self,node_id,mac_addr = "mac",manage_ip = "10.0.0.1",available = True):
-        self.node_id   = node_id 
+        self.node_id   = node_id
         self.mac_addr  = mac_addr
         self.manage_ip = manage_ip
         self.available = available
@@ -45,10 +45,10 @@ class Group(Base):
     network_id  = Column(Integer,ForeignKey('networks.network_id'))
     deployed    = Column(Boolean)
     owner_name  = Column(String,ForeignKey('users.user_name'))
-    
+
     vm          = relationship("VM",backref=backref('group',uselist=False))
     network     = relationship("Network",backref=backref('group',uselist=False))
-    
+
     #Many to one mapping to User
     owner       = relationship("User",backref=backref('groups',order_by=group_name))
 
@@ -96,7 +96,7 @@ class Network(Base):
 class Vlan(Base):
     __tablename__ ='vlans'
     vlan_id       = Column(Integer,primary_key=True)
-    available     = Column(Boolean) 
+    available     = Column(Boolean)
 
     def __init__(self,vlan_id,available=True):
         self.vlan_id   = vlan_id
