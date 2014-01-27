@@ -1,36 +1,57 @@
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker,backref
+
 Base=declarative_base()
 
+class NIC(Base):
+    __tablename__ = 'nics'
+    
+    nic_id    = Column(Integer, primary_key = True)
+    mac_addr  = Column(String)
+    # The name is one of ipmi, pxe, data0, data1
+    name      = Column(String)
+    available = Column(Boolean)
+    port_id   = Column(Integer,ForeignKey('ports.port_id'))
+    node_id   = Column(Integer,ForeignKey('nodes.node_id'))
+    # One to one mapping port
+    port      = relationship("Port",backref=backref('nic',uselist=False))
+    node      = relationship("Node",backref=backref('nics',order_by=mac_addr)) 
+    
+    def __init__(self,nic_id,mac_addr,name,available = True):
+        self.nic_id    = nic_id
+        self.mac_addr  = mac_addr
+        self.name      = name 
+        self.available = available
+        
+    def __repr__(self):
+        return "<NIC(%r %r %r %r)>"%(
+            self.nic_id,
+            self.mac_addr,
+            self.name,
+            self.available)
+        
+        
 class Node(Base):
     __tablename__='nodes'
 
     node_id    = Column(Integer,primary_key=True)
-    mac_addr   = Column(String)
-    manage_ip  = Column(String)
     available  = Column(Boolean)
     group_name = Column(String,ForeignKey('groups.group_name'))
-    port_id    = Column(Integer,ForeignKey('ports.port_id'))
     #Many to one mapping to group
     group      = relationship("Group",backref=backref('nodes',order_by=node_id))
-    #One to one mapping to port
-    port       = relationship("Port",backref=backref('node',uselist=False))
 
-    def __init__(self,node_id,mac_addr = "mac",manage_ip = "10.0.0.1",available = True):
+
+
+    def __init__(self,node_id,available = True):
         self.node_id   = node_id
-        self.mac_addr  = mac_addr
-        self.manage_ip = manage_ip
         self.available = available
 
     def __repr__(self):
         return "<Node(%r %r %r %r %r %r)"%(
-                self.node_id,
-                self.mac_addr,
-                self.manage_ip,
-                self.available,
-                self.group.group_name if self.group else None,
-                self.port)
+            self.node_id,
+            self.available,
+            self.group.group_name if self.group else None)
 
 """
 One to one mapping between group and vm
@@ -147,7 +168,4 @@ engine=create_engine('sqlite:///spl.db',echo=False)
 Base.metadata.create_all(engine)
 Session=sessionmaker(bind=engine)
 session=Session()
-
-#Check all nodes in g1 connect to same switch.
-#run the script, print the nodes
 
