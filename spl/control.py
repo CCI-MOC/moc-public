@@ -11,7 +11,7 @@ def query_db(classname):
     for some in all:
         print some
     return all
-        
+
 def create_user(user_name,password):
     user = User(user_name,password)
     session.add(user)
@@ -34,14 +34,14 @@ def get_entity_by_cond(classname,cond):
 
 def add_node_to_group(node_id,group_name):
     #ownership check
-    
+
     node=get_entity_by_cond(Node,'node_id==%d'%node_id)
     group=get_entity_by_cond(Group,'group_name=="%s"'%group_name)
-    
+
     if group.owner_name!=current_user and current_user!="admin":
         print 'access denied'
         return
-    
+
     if node.available:
         node.group=group
         node.available=False
@@ -53,18 +53,18 @@ def add_node_to_group(node_id,group_name):
 def remove_node_from_group(node_id,group_name):
     node = get_entity_by_cond(Node, 'node_id==%d'%node_id)
     group = get_entity_by_cond(Group,'group_name=="%s"'%group_name)
-    
+
     if group.owner_name!=current_user and current_user!="admin":
         print 'access denied'
-        return 
-    
+        return
+
     if node.group_name != group_name:
         print 'node',node_id,'not in',group_name
         return
     node.group = None
     node.available = True
 
-    
+
 
 
 def create_group(group_name,vm_name,network_id):
@@ -79,7 +79,7 @@ def create_group(group_name,vm_name,network_id):
     else:
         print "error: vm "+vm_name+" not available"
         return
-    
+
     if check_available(Network,network_id_cond):
         group.network=get_entity_by_cond(Network,network_id_cond)
         group.network.available=False
@@ -97,11 +97,11 @@ def destroy_group(group_name):
     if not group:
         print 'Group does not exist'
         return
-    
+
     if current_user!="admin" and group_name.owner_name != current_user:
         print 'access denied'
         return
-    
+
     for node in group.nodes:
         node.available = True
     group.nodes = []
@@ -116,9 +116,9 @@ def check_same_non_empty_list(ls):
 
 def deploy_group(group_name):
     """Deploys the group named `group_name`
-    
+
     This does the following:
-    
+
     1. Set up the vlan associated with the group
     2. Connect the head node vm to the vlan
     3. Supply the necessary machine information to the head node via virtio
@@ -132,11 +132,11 @@ def deploy_group(group_name):
         str(group.network_id),
         'machines.txt',
     )
-  
-    machines_dirname = os.path.dirname(machines_filename) 
+
+    machines_dirname = os.path.dirname(machines_filename)
     if not os.path.isdir(machines_dirname):
-        os.mkdir(machines_dirname) 
-      
+        os.mkdir(machines_dirname)
+
     with open(machines_filename, 'w') as f:
         for node in nodes:
             f.write(("%s %s\n"%(node.mac_addr,node.manage_ip)))
@@ -147,7 +147,7 @@ def deploy_group(group_name):
     for node in nodes:
         switches.append(node.port.switch_id)
         ports+=str(node.port.port_no)+','
-    #Check all the nodes in the group are connected to the same switch 
+    #Check all the nodes in the group are connected to the same switch
     switch_id=check_same_non_empty_list(switches)
     if switch_id==False:
         # TODO: raise an exception
@@ -160,15 +160,15 @@ def deploy_group(group_name):
     switch_drivers = {'cisco_snmp.py':cisco_snmp}
     driver = switch_drivers[switch.script]
 
-        
-    
-    
+
+
+
     print group.network_id
     driver.make_remove_vlans(str(group.network_id),True)
     print 'ports'+ports
     driver.edit_ports_on_vlan(ports,str(group.network_id),True)
 
-    os.system(('../vm-vlan up %s %s' % (group.network_id,group.vm_name))) 
-  
+    os.system(('../vm-vlan up %s %s' % (group.network_id,group.vm_name)))
+
     group.deployed = True
-    
+
