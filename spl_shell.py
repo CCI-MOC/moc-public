@@ -20,6 +20,33 @@ def create_group(cmd):
     #print group_name, network_id, vm_name
     spl.control.create_group(group_name,vm_name,network_id)
 
+def create_node(cmd):
+    parts = spl.command_pattern.create_node.match(cmd)
+    node_id= int(parts.group(1))
+    spl.control.create_node(node_id)
+
+def create_nic(cmd):
+    parts = spl.command_pattern.create_nic.match(cmd)
+    nic_id,mac_addr,name = parts.groups()
+    nic_id = int(nic_id)
+    spl.control.create_nic(nic_id,mac_addr,name)
+
+def create_port(cmd):
+    parts = spl.command_pattern.create_port.match(cmd)
+    port_id, switch_id, port_no = map(int, parts.groups())
+    spl.control.create_port(port_id,switch_id,port_no)
+    
+def add_nic(cmd):
+    parts = spl.command_pattern.add_nic.match(cmd)
+    nic_id, node_id = map(int,parts.groups())
+    spl.control.add_nic(nic_id,node_id)
+
+def create_switch(cmd):
+    parts = spl.command_pattern.create_switch.match(cmd)
+    switch_id, script = parts.groups()
+    switch_id = int(switch_id)
+    spl.control.create_switch(switch_id,script)
+
 def add_node(cmd):
     '''
     add one node to a group
@@ -53,6 +80,7 @@ def show_table(cmd):
 
 def show_all():
     spl.control.query_db(spl.er.Node)
+    spl.control.query_db(spl.er.NIC)
     spl.control.query_db(spl.er.Port)
     spl.control.query_db(spl.er.Network)
     spl.control.query_db(spl.er.VM)
@@ -99,6 +127,17 @@ while True:
         print 'ch vlan'
     elif spl.command_pattern.change_head.match(cmd):
         print 'ch head'
+    elif spl.command_pattern.create_node.match(cmd):
+        print 'create node'
+        create_node(cmd)
+    elif spl.command_pattern.create_nic.match(cmd):
+        create_nic(cmd)
+    elif spl.command_pattern.add_nic.match(cmd):
+        add_nic(cmd)
+    elif spl.command_pattern.create_port.match(cmd):
+        create_port(cmd)
+    elif spl.command_pattern.create_switch.match(cmd):
+        create_switch(cmd)
     elif spl.command_pattern.add.match(cmd):
         print 'add node'
         add_node(cmd)

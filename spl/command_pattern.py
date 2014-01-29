@@ -43,4 +43,17 @@ change_vlan = re.compile('^change (\w+) vlan to (\d+)')
 # Change a group's vm
 change_head = re.compile('^change (\w+) head to (\S+)')
 
+#create a node
+create_node = re.compile('^node create (\d+)$')
+#create a nic
+create_nic = re.compile('^nic create (\d+) (\w+) (\w+)$')
+#add a nic to node
+add_nic = re.compile('^nic add (\d+) (\d+)$')
 
+#connect a nic to port, nic_id, port_id
+connect_nic = re.compile('^nic connect (\d+) (\d+)$')
+
+#create a switch
+create_switch = re.compile('^switch create (\d+) (\w+)$')
+#create a port , port_id, switch_id, port_no
+create_port = re.compile('^port create (\d+) (\d+) (\d+)$')

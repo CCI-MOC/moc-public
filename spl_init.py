@@ -64,12 +64,12 @@ def add_users():
     session.commit()
 
 def load_resources():
-    create_node_pool()
-    create_network_pool()
-    create_vm_pool()
-    create_switch_pool()
-    create_port_pool()
-    connect_node_to_port()
+#    create_node_pool()
+#    create_network_pool()
+#    create_vm_pool()
+#    create_switch_pool()
+#    create_port_pool()
+#    connect_node_to_port()
     add_users()
 
 if __name__=='__main__':

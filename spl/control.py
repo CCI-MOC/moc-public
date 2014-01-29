@@ -31,6 +31,32 @@ def check_available(classname,cond):
 def get_entity_by_cond(classname,cond):
     return session.query(classname).filter(cond).first()
 
+def create_node(node_id):
+    node = Node(node_id)
+    session.add(node)
+    session.commit()
+
+def create_nic(nic_id,mac_addr,name):
+    nic = NIC(nic_id,mac_addr,name)
+    session.add(nic)
+    session.commit()
+
+def add_nic(nic_id,node_id):
+    nic = get_entity_by_cond(NIC,'nic_id==%d'%nic_id)
+    node = get_entity_by_cond(Node,'node_id==%d'%node_id)
+    nic.node = node
+    session.commit()
+
+def create_switch(switch_id,script):
+    switch = Switch(switch_id, script)
+    session.add(switch)
+    session.commit()
+def create_port(port_id,switch_id,port_no):
+    switch = get_entity_by_cond(Switch,'switch_id==%d'%switch_id)
+    port = Port(port_id,port_no)
+    port.switch = switch
+    session.add(port)
+    session.commit()
 
 def add_node_to_group(node_id,group_name):
     #ownership check

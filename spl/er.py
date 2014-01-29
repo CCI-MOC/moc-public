@@ -25,11 +25,13 @@ class NIC(Base):
         self.available = available
         
     def __repr__(self):
-        return "<NIC(%r %r %r %r)>"%(
+        return "<NIC(%r %r %r %r %r %r)>"%(
             self.nic_id,
             self.mac_addr,
             self.name,
-            self.available)
+            self.available,
+            self.node_id if self.node else None,
+            self.port_id if self.port else None)
         
         
 class Node(Base):
@@ -48,7 +50,7 @@ class Node(Base):
         self.available = available
 
     def __repr__(self):
-        return "<Node(%r %r %r %r %r %r)"%(
+        return "<Node(%r %r %r)"%(
             self.node_id,
             self.available,
             self.group.group_name if self.group else None)
@@ -132,10 +134,10 @@ class Port(Base):
     port_no       = Column(Integer)
     switch        = relationship("Switch",backref=backref('ports',order_by=port_id))
 
-    def __init__(self,port_id,switch_id,port_no):
+    def __init__(self,port_id,port_no):
         self.port_id   = port_id
         self.port_no   = port_no
-        self.switch_id = switch_id
+    
     def __repr__(self):
         return "Port(%r %r %r)"%(self.port_id,self.switch_id,self.port_no)
 
