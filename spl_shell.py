@@ -4,7 +4,6 @@ import spl.er
 
 class_name={'group':spl.er.Group,
             'vm':spl.er.VM,
-            'network':spl.er.Network,
             'node':spl.er.Node,
             'user':spl.er.User}
 
@@ -15,10 +14,9 @@ def create_group(cmd):
     '''
     parts = spl.command_pattern.create_group.match(cmd)
     group_name = parts.group(1)
-    network_id = int(parts.group(2))
-    vm_name = parts.group(3)
+
     #print group_name, network_id, vm_name
-    spl.control.create_group(group_name,vm_name,network_id)
+    spl.control.create_group(group_name)
 
 def create_node(cmd):
     parts = spl.command_pattern.create_node.match(cmd)
@@ -35,7 +33,6 @@ def create_port(cmd):
     parts = spl.command_pattern.create_port.match(cmd)
     port_id, switch_id, port_no = map(int, parts.groups())
     spl.control.create_port(port_id,switch_id,port_no)
-    
 def add_nic(cmd):
     parts = spl.command_pattern.add_nic.match(cmd)
     nic_id, node_id = map(int,parts.groups())
@@ -47,6 +44,24 @@ def create_switch(cmd):
     switch_id = int(switch_id)
     spl.control.create_switch(switch_id,script)
 
+def connect_nic(cmd):
+    parts = spl.command_pattern.connect_nic.match(cmd)
+    nic_id, port_id = map(int,parts.groups())
+    spl.control.connect_nic(nic_id,port_id)
+
+def create_vlan(cmd):
+    parts = spl.command_pattern.create_vlan.match(cmd)
+    vlan_id = int(parts.group(1))
+    spl.control.create_vlan(vlan_id)
+
+def connect_vlan(cmd):
+    parts = spl.command_pattern.connect_vlan.match(cmd)
+    vlan_id,group_name,nic_name = parts.groups()
+    vlan_id = int(vlan_id)
+    spl.control.connect_vlan(vlan_id,group_name,nic_name)
+    
+    
+    
 def add_node(cmd):
     '''
     add one node to a group
@@ -82,7 +97,7 @@ def show_all():
     spl.control.query_db(spl.er.Node)
     spl.control.query_db(spl.er.NIC)
     spl.control.query_db(spl.er.Port)
-    spl.control.query_db(spl.er.Network)
+    spl.control.query_db(spl.er.Vlan)
     spl.control.query_db(spl.er.VM)
     spl.control.query_db(spl.er.Switch)
     spl.control.query_db(spl.er.Group)
@@ -123,8 +138,8 @@ while True:
         print 'free table'
     elif spl.command_pattern.show_table.match(cmd):
         show_table(cmd)
-    elif spl.command_pattern.change_vlan.match(cmd):
-        print 'ch vlan'
+    elif spl.command_pattern.create_vlan.match(cmd):
+        create_vlan(cmd)
     elif spl.command_pattern.change_head.match(cmd):
         print 'ch head'
     elif spl.command_pattern.create_node.match(cmd):
@@ -138,6 +153,10 @@ while True:
         create_port(cmd)
     elif spl.command_pattern.create_switch.match(cmd):
         create_switch(cmd)
+    elif spl.command_pattern.connect_nic.match(cmd):
+        connect_nic(cmd)
+    elif spl.command_pattern.connect_vlan.match(cmd):
+        connect_vlan(cmd)
     elif spl.command_pattern.add.match(cmd):
         print 'add node'
         add_node(cmd)
@@ -154,4 +173,4 @@ while True:
         print 'invalid command'
         print 'usage'
         print spl.command_pattern.help_text
-
+        

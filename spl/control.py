@@ -57,6 +57,23 @@ def create_port(port_id,switch_id,port_no):
     port.switch = switch
     session.add(port)
     session.commit()
+def connect_nic(nic_id, port_id):
+    nic  = get_entity_by_cond(NIC,'nic_id==%d'%nic_id)
+    port = get_entity_by_cond(Port, 'port_id==%d'%port_id)
+    nic.port = port 
+    session.commit()
+def connect_vlan(vlan_id,group_name,nic_name):
+    vlan           = get_entity_by_cond(Vlan,'vlan_id==%d'%vlan_id)
+    group          = get_entity_by_cond(Group,'group_name==%s'%group_name)
+    vlan.nic_name  = nic_name
+    vlan.group     = group
+    session.commit()
+
+
+def create_vlan(vlan_id):
+    vlan = Vlan(vlan_id)
+    session.add(vlan)
+    session.commit()
 
 def add_node_to_group(node_id,group_name):
     #ownership check
@@ -93,25 +110,8 @@ def remove_node_from_group(node_id,group_name):
 
 
 
-def create_group(group_name,vm_name,network_id):
-    #str,str,int
-
+def create_group(group_name):
     group=Group(group_name)
-    vm_name_cond='vm_name=="%s"'%vm_name
-    network_id_cond='network_id==%d'%network_id
-    if check_available(VM,vm_name_cond):
-        group.vm=get_entity_by_cond(VM,vm_name_cond)
-        group.vm.available=False
-    else:
-        print "error: vm "+vm_name+" not available"
-        return
-
-    if check_available(Network,network_id_cond):
-        group.network=get_entity_by_cond(Network,network_id_cond)
-        group.network.available=False
-    else:
-        print "error: network "+network_id+" not available"
-        return
     user = get_entity_by_cond(User,'user_name=="%s"'%current_user)
     group.owner = user
     session.add(group)
