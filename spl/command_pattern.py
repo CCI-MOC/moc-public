@@ -1,6 +1,16 @@
 import re
 
 help_text='''
+node create <node_id>
+nic create <nic_id> <mac_addr> <name>
+nic add <nic_id> <node_id>
+switch create <switch_id> <script>
+port create <port_id> <switch_id> <port_no>
+nic connect <nic_id> <port_id>
+group create <group_name>
+vlan create <vlan_id>
+vlan connect <vlan_id> <group_name> <nic_name>
+
 show all
 show <specific table>
 show free [specific table]
@@ -18,15 +28,13 @@ exit
 '''
 create_user = re.compile('^create user (\w+) (\w+)$')
 
-create_group = re.compile('^create group (\w+) vlan (\d+) head-node (\S+)')
-destroy_group = re.compile('^destroy group (\w+)$')
+
 
 add = re.compile('^add (\S+) to (\w+)$')
 # Remove a machine from a group
 remove = re.compile('^remove (\S+) from (\w+)$')
 
-# Create a vlan
-create_vlan = re.compile('^create vlan (\d+)')
+
 # Destroy a vlan
 destroy_vlan = re.compile('^destroy vlan (\d+)')
 
@@ -57,3 +65,15 @@ connect_nic = re.compile('^nic connect (\d+) (\d+)$')
 create_switch = re.compile('^switch create (\d+) (\w+)$')
 #create a port , port_id, switch_id, port_no
 create_port = re.compile('^port create (\d+) (\d+) (\d+)$')
+
+#connect nic to port
+connect_nic = re.compile('^nic connect (\d+) (\d+)$')
+
+#create a group_name
+create_group = re.compile('^group create (\w+)$')
+#destroy a group
+destroy_group = re.compile('^group destroy (\w+)$')
+#create a vlan
+create_vlan = re.compile('^vlan create (\d+)$')
+#connect vlan to a group with nic name
+connect_vlan = re.compile('^vlan connect <vlan_id> <group_name> <nic_name>$')

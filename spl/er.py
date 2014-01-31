@@ -55,22 +55,14 @@ class Node(Base):
             self.available,
             self.group.group_name if self.group else None)
 
-"""
-One to one mapping between group and vm
-One to one mapping between group and vlan
-Many to one mapping between node and group
-"""
-
 class Group(Base):
     __tablename__='groups'
     group_name  = Column(String,primary_key=True)
     vm_name     = Column(String,ForeignKey('vms.vm_name'))
-    network_id  = Column(Integer,ForeignKey('networks.network_id'))
     deployed    = Column(Boolean)
     owner_name  = Column(String,ForeignKey('users.user_name'))
-
     vm          = relationship("VM",backref=backref('group',uselist=False))
-    network     = relationship("Network",backref=backref('group',uselist=False))
+
 
     #Many to one mapping to User
     owner       = relationship("User",backref=backref('groups',order_by=group_name))
@@ -80,12 +72,10 @@ class Group(Base):
         self.deployed   = False
 
     def __repr__(self):
-      return "<Group(%r %r %r %r %r)>"%(
-              self.group_name,
-              self.vm,
-              self.network,
-              self.deployed,
-              self.owner_name)
+      return "<Group(%r %r %r)>"%(
+          self.group_name,
+          self.deployed,
+          self.owner_name)
 
 class VM(Base):
     __tablename__ = 'vms'
@@ -99,33 +89,21 @@ class VM(Base):
     def __repr__(self):
         return "<VM(%r %r)>"%(self.vm_name,self.available)
 
-class Network(Base):
-    __tablename__      = 'networks'
-    network_id         = Column(Integer,primary_key=True)
-    network_technology = Column(String)
-    available          = Column(Boolean)
-
-    def __init__(self,network_id,network_technology="vlan",available=True):
-        self.network_id         = network_id
-        self.network_technology = network_technology
-	self.available          = available
-    def __repr__(self):
-        return "Network(%r %r %r)"%(
-                self.network_id,
-                self.network_technology,
-                self.available)
 
 
 class Vlan(Base):
     __tablename__ ='vlans'
     vlan_id       = Column(Integer,primary_key=True)
     available     = Column(Boolean)
-
+    nic_name      = Column(String)
     def __init__(self,vlan_id,available=True):
         self.vlan_id   = vlan_id
         self.available = available
     def __repr__(self):
-        return "Vlan(%r %r)"%(self.vlan_id,self.available)
+        return "Vlan(%r %r %r)"%(
+            self.vlan_id,
+            self.available,
+            self.nic_name if self.nic_name else None)
 
 class Port(Base):
     __tablename__ = 'ports'
