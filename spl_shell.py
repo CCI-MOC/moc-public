@@ -66,9 +66,9 @@ def add_node(cmd):
     '''
     add one node to a group
     '''
-    parts = spl.command_pattern.add.match(cmd)
-    node_id = int(parts.group(1))
-    group_name = parts.group(2)
+    parts = spl.command_pattern.add_node.match(cmd)
+    node_id,group_name = parts.groups()
+    node_id = int(node_id)
 
     spl.control.add_node_to_group(node_id,group_name)
 
@@ -157,7 +157,7 @@ while True:
         connect_nic(cmd)
     elif spl.command_pattern.connect_vlan.match(cmd):
         connect_vlan(cmd)
-    elif spl.command_pattern.add.match(cmd):
+    elif spl.command_pattern.add_node.match(cmd):
         print 'add node'
         add_node(cmd)
     elif spl.command_pattern.remove.match(cmd):

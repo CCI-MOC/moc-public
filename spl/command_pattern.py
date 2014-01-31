@@ -10,6 +10,7 @@ nic connect <nic_id> <port_id>
 group create <group_name>
 vlan create <vlan_id>
 vlan connect <vlan_id> <group_name> <nic_name>
+node add <node_id> <group_name>
 
 show all
 show <specific table>
@@ -19,7 +20,7 @@ create vlan <vlan_id>
 destroy vlan <vlan_id>
 create group <group_name> vlan <vlan_id> head-node <vm_name>
 destroy group <group_name>
-add <node_ids> to <group_name>
+
 remove <node_ids> from <group_name>
 change <group_name> vlan to <vlan_id>
 change <group_name> head to <vm_name>
@@ -30,7 +31,7 @@ create_user = re.compile('^create user (\w+) (\w+)$')
 
 
 
-add = re.compile('^add (\S+) to (\w+)$')
+
 # Remove a machine from a group
 remove = re.compile('^remove (\S+) from (\w+)$')
 
@@ -77,3 +78,7 @@ destroy_group = re.compile('^group destroy (\w+)$')
 create_vlan = re.compile('^vlan create (\d+)$')
 #connect vlan to a group with nic name
 connect_vlan = re.compile('^vlan connect <vlan_id> <group_name> <nic_name>$')
+
+#add a node to group
+add_node = re.compile('^node add (\d+) (\w+)$')
+

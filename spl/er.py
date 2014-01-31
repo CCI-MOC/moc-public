@@ -25,7 +25,7 @@ class NIC(Base):
         self.available = available
         
     def __repr__(self):
-        return "<NIC(%r %r %r %r %r %r)>"%(
+        return "<NIC(nic_id:%r mac_addr:%r name:%r available:%r node_id:%r port_id:%r)>"%(
             self.nic_id,
             self.mac_addr,
             self.name,
@@ -50,7 +50,7 @@ class Node(Base):
         self.available = available
 
     def __repr__(self):
-        return "<Node(%r %r %r)"%(
+        return "<Node(node_id:%r available:%r group_name:%r)"%(
             self.node_id,
             self.available,
             self.group.group_name if self.group else None)
@@ -72,7 +72,7 @@ class Group(Base):
         self.deployed   = False
 
     def __repr__(self):
-      return "<Group(%r %r %r)>"%(
+      return "<Group(group_name:%r deployed:%r owner_name:%r)>"%(
           self.group_name,
           self.deployed,
           self.owner_name)
@@ -100,7 +100,7 @@ class Vlan(Base):
         self.vlan_id   = vlan_id
         self.available = available
     def __repr__(self):
-        return "Vlan(%r %r %r)"%(
+        return "Vlan(vlan_id:%r available:%r nic_name:%r)"%(
             self.vlan_id,
             self.available,
             self.nic_name if self.nic_name else None)
@@ -117,7 +117,7 @@ class Port(Base):
         self.port_no   = port_no
     
     def __repr__(self):
-        return "Port(%r %r %r)"%(self.port_id,self.switch_id,self.port_no)
+        return "Port(port_id:%r switch_id:%r port_no:%r)"%(self.port_id,self.switch_id,self.port_no)
 
 
 class Switch(Base):
@@ -129,7 +129,7 @@ class Switch(Base):
         self.switch_id = switch_id
         self.script    = script
     def __repr__(self):
-        return "Switch(%r %r)"%(self.switch_id,self.script)
+        return "Switch(switch_id:%r script:%r)"%(self.switch_id,self.script)
 
 class User(Base):
     __tablename__ = 'users'
@@ -142,7 +142,7 @@ class User(Base):
         self.user_type = user_type
         self.password  = password
     def __repr__(self):
-        return "User<%r %r %r>"%(self.user_name,self.user_type,self.password)
+        return "User<user_name:%r user_type:%r user_password:%r>"%(self.user_name,self.user_type,self.password)
 
 engine=create_engine('sqlite:///spl.db',echo=False)
 Base.metadata.create_all(engine)
