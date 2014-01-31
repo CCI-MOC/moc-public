@@ -72,6 +72,10 @@ connect_nic = re.compile('^nic connect (\d+) (\d+)$')
 
 #create a group_name
 create_group = re.compile('^group create (\w+)$')
+
+#deploy a group
+deploy_group = re.compile('^group deploy (\w+)$')
+
 #destroy a group
 destroy_group = re.compile('^group destroy (\w+)$')
 #create a vlan

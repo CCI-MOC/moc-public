@@ -82,6 +82,11 @@ def remove_node(cmd):
     #print 'add',node_id,'to',group_name
     spl.control.remove_node_from_group(node_id,group_name)
 
+def deploy_group(cmd):
+    parts = spl.command_pattern.deploy_group.match(cmd)
+    group_name = parts.group(1)
+    spl.control.deploy_group(group_name)
+
 def show_table(cmd):
     parts = spl.command_pattern.show_table.match(cmd)
     table = parts.group(1)
@@ -130,8 +135,8 @@ while True:
         create_group(cmd)
     elif cmd == 'show all':
         show_all()
-    elif spl.command_pattern.destroy_group.match(cmd):
-        print 'destroy a group'
+    elif spl.command_pattern.deploy_group.match(cmd):
+        deploy_group(cmd)
     elif spl.command_pattern.show_group.match(cmd):
         print 'show group'
     elif spl.command_pattern.show_free_table.match(cmd):
