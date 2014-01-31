@@ -9,8 +9,9 @@ which are not are labeld as such (typically under the heading
 "Conformance issues").
 """
 
-import os
 import uuid
+from subprocess import check_call as cmd
+from spl import config
 
 class Connection(object):
     """A connection to libvirtd"""
@@ -58,7 +59,7 @@ class Connection(object):
         # which generates one as a function of hostname & time.
         # Great variable names.
         name = 'headnode-%s' % uuid.uuid4()
-        os.system('virt-clone -o base-headnode -n %s --auto-clone' % name)
+        cmd(['virt-clone', '-o', 'base-headnode', '-n', name, '--auto-clone'])
         return HeadNode(name)
 
 class HeadNode(object):
@@ -74,21 +75,39 @@ class HeadNode(object):
         Instead, create a `Connection` and call `make_headnode()`.
         """
         self.name = name
+        self.nics = []
 
     def start(self):
         """Start the vm"""
-        os.system('virsh start %s' % self.name)
+        cmd(['virsh', 'start', self.name])
 
     def stop(self):
         """Stop the vm.
 
         This does a hard poweroff; the OS is not given a chance to react.
         """
-        os.system('virsh destroy %s' % self.name)
+        cmd(['virsh', 'destroy', self.name])
+
+    def add_nic(self, vlan_id):
+        bridge = 'br-vlan%d' % vlan_id
+        vlan_nic = '%s.%d' % (config.trunk_nic, vlan_id)
+        vlan_id = str(vlan_id)
+        cmd(['brctl', 'addbr', bridge])
+        cmd(['vconfig', 'add', config.trunk_nic, vlan_id])
+        cmd(['brctl', 'addif', bridge, vlan_nic])
+        cmd(['virsh', 'attach-interface', self.name, 'bridge', bridge, '--config'])
+        self.nics.append(vlan_id)
 
     def delete(self):
         """Delete the vm, including associated storage"""
-        os.system('virsh undefine %s --remove-all-storage' % self.name)
+        cmd(['virsh', 'undefine', self.name, '--remove-all-storage'])
+        for nic in self.nics:
+            nic = str(nic)
+            bridge = 'br-vlan%d' % nic
+            vlan_nic = '%s.%d' % (config.trunk_nic, nic)
+            cmd(['brctl', 'delif', bridge, vlan_nic])
+            cmd(['vconfig', 'rem', vlan_nic])
+            cmd(['brctl', 'delbr', bridge])
 
     def get_interfaces(self):
         """Return a list of the vm's network interfaces.

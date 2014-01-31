@@ -13,3 +13,5 @@ paths={
     # It will contain subdirectories named after the corresponding vlan id.
     "headnode-config" : "/var/lib/headnode-config",
 }
+
+trunk_nic = 'eth1'
