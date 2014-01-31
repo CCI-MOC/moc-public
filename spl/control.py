@@ -3,6 +3,7 @@ import spl.config
 
 import os
 import os.path
+import dell
 
 current_user = ""
 
@@ -64,7 +65,7 @@ def connect_nic(nic_id, port_id):
     session.commit()
 def connect_vlan(vlan_id,group_name,nic_name):
     vlan           = get_entity_by_cond(Vlan,'vlan_id==%d'%vlan_id)
-    group          = get_entity_by_cond(Group,'group_name==%s'%group_name)
+    group          = get_entity_by_cond(Group,'group_name=="%s"'%group_name)
     vlan.nic_name  = nic_name
     vlan.group     = group
     session.commit()
@@ -141,5 +142,15 @@ def check_same_non_empty_list(ls):
     return ls[0]
 
 def deploy_group(group_name):
-    print 'deploy a group a group'
-
+    group = get_entity_by_cond(Group,'group_name=="%s"'%group_name)
+    port_list = ""
+    for node in group.nodes:
+        port_list = port_list + str(node.nics[0].port.port_no)+","
+    
+    port_list = port_list[0:-1]
+    vlan_id = group.vlans[0].vlan_id
+    print vlan_id
+    print port_list
+    
+    #dell.make_remove_vlans(str(vlan_id),True)
+    #dell.edit_ports_on_vlan("",str(vlan_id),True)

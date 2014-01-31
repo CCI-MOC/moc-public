@@ -81,7 +81,7 @@ destroy_group = re.compile('^group destroy (\w+)$')
 #create a vlan
 create_vlan = re.compile('^vlan create (\d+)$')
 #connect vlan to a group with nic name
-connect_vlan = re.compile('^vlan connect <vlan_id> <group_name> <nic_name>$')
+connect_vlan = re.compile('^vlan connect (\d+) (\w+) (\w+)$')
 
 #add a node to group
 add_node = re.compile('^node add (\d+) (\w+)$')

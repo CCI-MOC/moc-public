@@ -96,13 +96,17 @@ class Vlan(Base):
     vlan_id       = Column(Integer,primary_key=True)
     available     = Column(Boolean)
     nic_name      = Column(String)
+    group_name    = Column(String,ForeignKey('groups.group_name'))
+    
+    group         = relationship("Group",backref=backref('vlans',order_by=nic_name))
     def __init__(self,vlan_id,available=True):
         self.vlan_id   = vlan_id
         self.available = available
     def __repr__(self):
-        return "Vlan(vlan_id:%r available:%r nic_name:%r)"%(
+        return "Vlan(vlan_id:%r available:%r group_name:%r nic_name:%r)"%(
             self.vlan_id,
             self.available,
+            self.group_name if self.group_name else None,
             self.nic_name if self.nic_name else None)
 
 class Port(Base):
