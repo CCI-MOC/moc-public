@@ -152,5 +152,5 @@ def deploy_group(group_name):
     print vlan_id
     print port_list
     
-    #dell.make_remove_vlans(str(vlan_id),True)
-    #dell.edit_ports_on_vlan("",str(vlan_id),True)
+    dell.make_remove_vlans(str(vlan_id),True)
+    dell.edit_ports_on_vlan("",str(vlan_id),True)
