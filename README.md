@@ -1,5 +1,5 @@
-# Massachusetts Open Cloud Shared Provisioning Layer
+# Massachusetts Open Cloud 
 
-This repository contains the MOC's spl tool. There used to be other
-things here, hence the more general name. The tool itself will likely
-be renamed soon; when that happens the repo will follow suit.
+Say something good about the project
+
+For our documentation, see the following: [docs](docs/docs.md)
