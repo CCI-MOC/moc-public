@@ -7,7 +7,7 @@ We are a friendly bunch of folks with a variety of backgrounds.
 
 See a list of us [here](http://www.bu.edu/cci/moc/mocpeople/)!
 
-## Our current projects
+## Current projects
 * [Hardware As A Service](https://github.com/CCI-MOC/haas) (HaaS): securely automating the provisioning and isolation of systems and networks in a multi-tenant data center.
 * Openstack UI: adding extensions to Openstack's Horizon in order to accomodate a multi-provider marketplace.
 * Openstack UI: Introducing a "simple" mode for Horizon to support easy deployment and management of VMs
@@ -20,4 +20,4 @@ Documentation for the various MOC projects lives on github in one of three place
 1. Items that are less formal by nature (like [meeting minutes](https://github.com/CCI-MOC/moc-public/wiki), [random notes](https://github.com/CCI-MOC/moc-public/wiki/OpenStack-Notes), or [project planning](https://github.com/CCI-MOC/moc-public/wiki/Current-tasks)) are kept on the [MOC Public Wiki](https://github.com/CCI-MOC/moc-public/wiki)
 
 ## Code review policy
-Please see check out [our workflow](docs/workflow.md))
+Please see check out [our workflow](docs/workflow.md).
