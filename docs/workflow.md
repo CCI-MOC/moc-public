@@ -10,9 +10,13 @@ For documentation changes, only one approval is required (or none if it's trivia
 To complete the MOC workflow:
 
 1. Create a new branch
-> `git branch -b NEWBRANCH`
+
+	git branch -b NEWBRANCH
+
 1. Do your commits
 1. Push back to github
-> `git push -u origin NEWBRANCH`
+
+	git push -u origin NEWBRANCH
+
 1. Go to github and submit a pull request to the devel branch for comments
 
