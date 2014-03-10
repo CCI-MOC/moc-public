@@ -1,13 +1,21 @@
-# Workflow the team should follow
+# Development/branch management methodology
 
-create new branch
+Please see http://scottchacon.com/2011/08/31/github-flow.html
 
-	git branch -b NEWBRANCH
+# Code reviews
 
-do commits...
+Per the above document, code reviews are done via github\'s "pull" mechanism. After the pull has been created, 2 people must then review it, with the second (after approving of the changes) completing the pull request.
 
-push back to github
+For documentation changes, only one approval is required.
 
-	git push -u origin NEWBRANC
+# Branches
 
-go through github and submit pull request to devel for comments
+To complete the MOC workflow:
+
+1. Create a new branch
+  > `git branch -b NEWBRANCH`
+1. Do your commits
+1. Push back to github
+  > `git push -u origin NEWBRANCH`
+1. Go to github and submit a pull request to the devel branch for comments
+
