@@ -16,12 +16,12 @@ the change is trivial).
 # Branches
 The MOC workflow is as follows:
 
-1. Create a new local branch
+1. Create a new local branch:
 
 	git branch -b NEWBRANCH
 
 2. Do your commits
-3. Push back to github, on a new remote branch with the same name.
+3. Push back to github, on a new remote branch with the same name:
 
 	git push -u origin NEWBRANCH
 
