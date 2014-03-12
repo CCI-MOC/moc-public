@@ -1,10 +1,17 @@
 # Development/branch management methodology
-Please see http://scottchacon.com/2011/08/31/github-flow.html
 
-# Code reviews
-Per the above document, code reviews are done via github's "pull" mechanism. After the pull has been created, 2 people must then review it, with the second (after approving of the changes) completing the pull request.
+Our workflow is based on [github flow][gf]. This document provides some
+particulars, as well as a quick reference for some common operations.
 
-For documentation changes, only one approval is required (or none if it's trivial).
+# Code review
+
+Per the above document, code review happens via github's "pull
+request" mechanism. After the pull request has been created, 2 people
+must then sign off on the change, with the second (after approving
+of the changes) merging the pull request.
+
+For documentation changes, only one signoff is required (or none if
+the change is trivial).
 
 # Branches
 The MOC workflow is as follows:
@@ -24,3 +31,4 @@ The MOC workflow is as follows:
 4. Go to github and submit a pull request to the devel branch for
    comments.
 
+[gf]: http://scottchacon.com/2011/08/31/github-flow.html
