@@ -7,16 +7,20 @@ Per the above document, code reviews are done via github's "pull" mechanism. Aft
 For documentation changes, only one approval is required (or none if it's trivial).
 
 # Branches
-To complete the MOC workflow:
+The MOC workflow is as follows:
 
-1. Create a new branch
+1. Create a new local branch
 
 	git branch -b NEWBRANCH
 
-1. Do your commits
-1. Push back to github
+2. Do your commits
+3. Push back to github, on a new remote branch with the same name.
 
 	git push -u origin NEWBRANCH
 
-1. Go to github and submit a pull request to the devel branch for comments
+   the `-u` sets up a correspondence between the local and remote
+   branches; thereafter you can just type `git push`.
+
+4. Go to github and submit a pull request to the devel branch for
+   comments.
 
