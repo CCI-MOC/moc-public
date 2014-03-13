@@ -1,6 +1,0 @@
-vlan-head-102
-vlan-head-107
-vlan-head-108
-vm1
-vm2
-vm3

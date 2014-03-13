@@ -1,2 +1,0 @@
-1 cisco_snmp.py
-2 tp_link.py

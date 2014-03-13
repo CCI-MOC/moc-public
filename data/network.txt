@@ -1,5 +1,0 @@
-101 vlan
-102 vlan
-103 vlan
-104 vlan
-105 vlan
