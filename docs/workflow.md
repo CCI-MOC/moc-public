@@ -6,12 +6,12 @@ particulars, as well as a quick reference for some common operations.
 # Code review
 
 Per the above document, code review happens via github's "pull
-request" mechanism. After the pull request has been created, 2 people
-must then sign off on the change, with the second (after approving
-of the changes) merging the pull request.
+request" mechanism. After the pull request has been created, at least
+one person must then sign off on the change, after which anyone may
+merge it into `devel`.
 
-For documentation changes, only one signoff is required (or none if
-the change is trivial).
+Documentation works the same way, but for very trivial changes, it is
+acceptable to bypass this process.
 
 # Branches
 The MOC workflow is as follows:
