@@ -1,13 +1,17 @@
 # Massachusetts Open Cloud 
 
-Welcome to the main repository for the [Mass Open Cloud][web]!
-Below you will find several projects discussing various aspects of
-what we are doing.
+Welcome to the main developer repository for the Massachusetts Open
+Cloud. You can find out more about the project including news, who is
+involved, public presentations, etc... [here][web].
+
+## Code development
+
+To get started on the development, start [here][getstarted].  Then take a 
+look at [our workflow](docs/workflow.md).
 
 ## Our people
 
-We are a friendly bunch of folks with a variety of backgrounds. See
-a list of us [here][people]!
+You can find some of the developers working on the project [here][people]!
 
 ## Current projects
 * [Hardware As A Service](https://github.com/CCI-MOC/haas) (HaaS):
@@ -19,7 +23,7 @@ a list of us [here][people]!
   * introducing a "simple" mode for Horizon to support easy
     deployment and management of VMs
 * Openstack core: Adding the capability to handle multiple providers
-  of individual services (like compute, object storage, etc)
+  of individual services (like compute, object storage, etc).
 
 ## Documentation
 
@@ -35,14 +39,11 @@ three places:
    repos that are not owned by MOC or papers.
 3. Items that are less formal by nature (like [meeting minutes][mm],
    [random notes][rn], or [project planning][pp]) are kept on the
-   [MOC Public Wiki](https://github.com/CCI-MOC/moc-public/wiki)
-
-## Code review policy
-
-Please see check out [our workflow](docs/workflow.md).
+   [MOC Public Wiki](https://github.com/CCI-MOC/moc-public/wiki).  
 
 [web]:    http://www.massopencloud.org
-[people]: http://www.bu.edu/cci/moc/mocpeople/
+[getstarted]:  https://github.com/CCI-MOC/moc-public/wiki/Getting-started
+[people]: https://github.com/CCI-MOC/moc-public/wiki/People
 [mm]:     https://github.com/CCI-MOC/moc-public/wiki
 [rn]:     https://github.com/CCI-MOC/moc-public/wiki/OpenStack-Notes
 [pp]:     https://github.com/CCI-MOC/moc-public/wiki/Current-tasks
